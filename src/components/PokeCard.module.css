@@ -1,0 +1,52 @@
+.container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.front {
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  border: 1px solid gold;
+  border-radius: 10px;
+  background: linear-gradient(rgba(199, 88, 199, 1), #2d6fcc);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: aliceblue;
+  user-select: none;
+  transition: all .2s;
+}
+
+.facedown {
+  transform: rotate3d(0, 1, 0, 90deg);
+}
+
+.faceup {
+  transform: rotate3d(0);
+}
+
+.back {
+  transition: all .2s;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  user-select: none;
+  border: 1px solid gold;
+  border-radius: 10px;
+  background: linear-gradient(rgba(211, 82, 26, 1), #e0ac52);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: aliceblue;
+}
