@@ -151,123 +151,137 @@ const App = () => {
 
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-4">
-          <div className="col-span-2 bg-color-darkblue rounded-md">
-            <CardContainer>
-              {pokemonCards
-                ? pokemonCards.map((card, index) => {
-                    return (
-                      <PokeCard
-                        flipped={
-                          firstChoice === card ||
-                          secondChoice === card ||
-                          card.isMatched
-                        }
-                        cardSelector={cardSelector}
-                        key={index}
-                        name={card.name}
-                        image={card.image}
-                        card={card}
-                      />
-                    );
-                  })
-                : "Press start game"}
-            </CardContainer>
-          </div>
-          <div className="bg-color-darkblue rounded-md px-4 py-8">
+          <div className="col-span-3 lg:col-span-1 bg-color-darkblue rounded-md px-4 py-8 flex flex-col gap-2 justify-around">
             <h2 className="text-white text-2xl font-bold">Game Options</h2>
-            <p className="text-white">Difficulty level</p>
+            <div>
+              <p className="text-white mb-2">Difficulty level</p>
 
-            <div className="grid grid-cols-3 gap-2">
-              <div
-                onClick={() => setDifficulty(0)}
-                className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                  difficulty === 0
-                    ? "border border-color-cyan shadow-color-cyan shadow-md "
-                    : ""
-                }`}
-              >
-                <img
-                  style={{ imageRendering: "pixelated" }}
-                  src="/c1.png"
-                  className="aspect-square"
-                  alt="charmander"
-                />
-                <p className="text-xl text-color-cyan">easy</p>
-              </div>
-              <div
-                onClick={() => setDifficulty(1)}
-                className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                  difficulty === 1
-                    ? "border border-color-cyan shadow-color-cyan shadow-md "
-                    : ""
-                }`}
-              >
-                <img
-                  style={{ imageRendering: "pixelated" }}
-                  src="/c2.png"
-                  className="aspect-square"
-                  alt="charmander"
-                />
-                <p className="text-xl text-color-cyan">medium</p>
-              </div>
-              <div
-                onClick={() => setDifficulty(2)}
-                className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                  difficulty === 2
-                    ? "border border-color-cyan shadow-color-cyan shadow-md "
-                    : ""
-                }`}
-              >
-                <img
-                  style={{ imageRendering: "pixelated" }}
-                  src="/c3.png"
-                  className="aspect-square"
-                  alt="charmander"
-                />
-                <p className="text-xl text-color-cyan">hard</p>
+              <div className="grid grid-cols-3 gap-2">
+                <div
+                  onClick={() => setDifficulty(0)}
+                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
+                    difficulty === 0
+                      ? "border border-color-cyan shadow-color-cyan shadow-md "
+                      : ""
+                  }`}
+                >
+                  <img
+                    style={{ imageRendering: "pixelated" }}
+                    src="/c1.png"
+                    className="aspect-square"
+                    alt="charmander"
+                  />
+                  <p className="text-xl text-color-cyan">easy</p>
+                </div>
+                <div
+                  onClick={() => setDifficulty(1)}
+                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
+                    difficulty === 1
+                      ? "border border-color-cyan shadow-color-cyan shadow-md "
+                      : ""
+                  }`}
+                >
+                  <img
+                    style={{ imageRendering: "pixelated" }}
+                    src="/c2.png"
+                    className="aspect-square"
+                    alt="charmander"
+                  />
+                  <p className="text-xl text-color-cyan">medium</p>
+                </div>
+                <div
+                  onClick={() => setDifficulty(2)}
+                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
+                    difficulty === 2
+                      ? "border border-color-cyan shadow-color-cyan shadow-md "
+                      : ""
+                  }`}
+                >
+                  <img
+                    style={{ imageRendering: "pixelated" }}
+                    src="/c3.png"
+                    className="aspect-square"
+                    alt="charmander"
+                  />
+                  <p className="text-xl text-color-cyan">hard</p>
+                </div>
               </div>
             </div>
 
-            <p className="text-white">Trainer Names</p>
+            <div>
+              <p className="text-white mb-2">Trainer Names</p>
 
-            <div className="grid grid-cols-2 gap-1">
-              <div className="relative">
-                <input
-                  className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
-                  onChange={handlePlayerName}
-                  name="player1"
-                />
-                <p className="absolute top-1 left-1 text-xs text-color-cyan">
-                  Player 1
-                </p>
-              </div>
-              <div className="relative">
-                <input
-                  className="bg-color-lightblue pt-4 pb-1 px-2 w-full rounded-md border text-white focus:outline-color-cyan"
-                  onChange={handlePlayerName}
-                  name="player2"
-                />
-                <p className="absolute top-1 left-1 text-xs text-color-cyan">
-                  Player 2
-                </p>
+              <div className="grid grid-cols-2 gap-1">
+                <div className="relative">
+                  <input
+                    className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
+                    onChange={handlePlayerName}
+                    name="player1"
+                  />
+                  <p className="absolute top-1 left-1 text-xs text-color-cyan">
+                    Player 1
+                  </p>
+                </div>
+                <div className="relative">
+                  <input
+                    className="bg-color-lightblue pt-4 pb-1 px-2 w-full rounded-md border text-white focus:outline-color-cyan"
+                    onChange={handlePlayerName}
+                    name="player2"
+                  />
+                  <p className="absolute top-1 left-1 text-xs text-color-cyan">
+                    Player 2
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="flex justify-center">
               <button
-                className="text-xl text-white bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow"
+                className="text-xl text-white w-full bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow"
                 onClick={startGame}
               >
                 Play
               </button>
             </div>
           </div>
+          <div className="col-span-3 lg:col-span-2 bg-color-darkblue rounded-md">
+            <CardContainer>
+              {pokemonCards ? (
+                pokemonCards.map((card, index) => {
+                  return (
+                    <PokeCard
+                      flipped={
+                        firstChoice === card ||
+                        secondChoice === card ||
+                        card.isMatched
+                      }
+                      cardSelector={cardSelector}
+                      key={index}
+                      name={card.name}
+                      image={card.image}
+                      card={card}
+                    />
+                  );
+                })
+              ) : (
+                <p className="self-center text-2xl font-bold text-color-cyan">
+                  Configure game options to play!
+                </p>
+              )}
+            </CardContainer>
+            {currentPlayer ? (
+              <div className="bg-color-darkblue p-3 text-xl rounded-md text-white text-center font-bold absolute bottom-10 left-1/2 -translate-x-1/2">
+                It's{" "}
+                <span className="text-color-cyan font-bold">
+                  {currentPlayer}
+                </span>{" "}
+                turn.
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-      </div>
-
-      <div>
-        <div>{turn}</div>
-        <div>Is {currentPlayer} turn.</div>
       </div>
     </div>
   );
