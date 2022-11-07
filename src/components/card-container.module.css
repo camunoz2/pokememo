@@ -1,0 +1,20 @@
+.customscroll::-webkit-scrollbar {
+  width: 1rem;
+}
+
+.customscroll::-webkit-scrollbar-track {
+  background-color: aqua;
+}
+
+.customscroll::-webkit-scrollbar-corner {
+  border-radius: 10px;
+}
+
+.customscroll::-webkit-scrollbar-track-piece {
+  background-color: #303966;
+}
+
+.customscroll::-webkit-scrollbar-thumb {
+  background-color: #06d591;
+  border-radius: 10px;
+}
