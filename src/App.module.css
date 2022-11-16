@@ -7,6 +7,6 @@
   }
 }
 
-#bg {
+.bg {
   animation: slide 150s linear infinite;
 }
