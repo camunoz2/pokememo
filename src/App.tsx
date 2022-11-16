@@ -130,7 +130,6 @@ const App = () => {
       ...players,
       [event.target.name]: event.target.value,
     });
-    console.log(players);
   };
 
   return (
