@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import CardContainer from "./components/CardContainer";
 import PokeCard from "./components/PokeCard";
-import styles from "./app.module.css";
 
 export interface PokemonCard {
   name: string;
@@ -136,7 +135,7 @@ const App = () => {
 
   return (
     <div className="overflow-hidden w-full h-full">
-      <div id={styles.bg} className="bg-pattern w-full h-full -z-20 absolute" />
+      <div className="bg-pattern w-full h-full -z-20 absolute" />
       <div className="w-full h-full -z-10 absolute bg-color-cyan/30 backdrop-blur-sm" />
 
       <div className="bg-color-darkblue py-2 drop-shadow-md">
