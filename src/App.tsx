@@ -212,23 +212,25 @@ const App = () => {
               <div className="grid grid-cols-2 gap-1">
                 <div className="relative">
                   <input
+                    title="player1"
                     className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
                     onChange={handlePlayerName}
                     name="player1"
                   />
-                  <p className="absolute top-1 left-1 text-xs text-color-cyan">
+                  <label className="absolute top-1 left-1 text-xs text-color-cyan">
                     Player 1
-                  </p>
+                  </label>
                 </div>
                 <div className="relative">
                   <input
+                    title="player2"
                     className="bg-color-lightblue pt-4 pb-1 px-2 w-full rounded-md border text-white focus:outline-color-cyan"
                     onChange={handlePlayerName}
                     name="player2"
                   />
-                  <p className="absolute top-1 left-1 text-xs text-color-cyan">
+                  <label className="absolute top-1 left-1 text-xs text-color-cyan">
                     Player 2
-                  </p>
+                  </label>
                 </div>
               </div>
             </div>
