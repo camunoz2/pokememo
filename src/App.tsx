@@ -14,7 +14,7 @@ const TOTAL_POKEMONS = 151;
 const DIFFICULTY_LEVELS = [
   {
     level: "easy",
-    cardQty: 6,
+    cardQty: 2,
   },
   {
     level: "medium",
@@ -43,6 +43,7 @@ const App = () => {
   const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
   const [difficulty, setDifficulty] = useState(0);
   const [foundMatch, setFoundMatch] = useState(false);
+  const [pairsFound, setPairsFound] = useState(0);
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
@@ -63,6 +64,18 @@ const App = () => {
   }, [firstChoice, secondChoice]);
 
   useEffect(() => {
+    if (!pokemonCards) return;
+    if (foundMatch) setPairsFound((prev) => prev + 1);
+  }, [turn]);
+
+  useEffect(() => {
+    if (!pokemonCards) return;
+    if (pairsFound === pokemonCards.length / 2) {
+      gameOver();
+    }
+  }, [pairsFound]);
+
+  useEffect(() => {
     if (!players) return;
     if (foundMatch) {
       const player = players.map((p) => {
@@ -77,6 +90,10 @@ const App = () => {
       setCurrentPlayerTurn((prev) => prev + 1);
     } else setCurrentPlayerTurn(1);
   }, [turn]);
+
+  const gameOver = () => {
+    console.log("You win!");
+  };
 
   const matchPairs = (choice: string) => {
     if (pokemonCards) {
@@ -97,7 +114,9 @@ const App = () => {
   const startGame = async () => {
     setPokemonCards([]);
     resetCards();
+    setCurrentPlayerTurn(0);
     setTurn(1);
+    setPairsFound(0);
     const ids = getRandomNumberArray(
       DIFFICULTY_LEVELS[difficulty].cardQty,
       TOTAL_POKEMONS
@@ -150,7 +169,7 @@ const App = () => {
   ) => {
     const setNames = players?.map((player) => {
       if (player.id === playerId) {
-        return { ...player, name: event.target.name };
+        return { ...player, name: event.target.value };
       } else return player;
     });
     setPlayers(setNames);
@@ -188,17 +207,34 @@ const App = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-4">
           <div className="col-span-3 lg:col-span-1 bg-color-darkblue rounded-md px-4 py-8 flex flex-col gap-2 justify-around">
-            <h2 className="text-white text-2xl font-bold">Game Options</h2>
+            <h2 className="text-white text-2xl font-bold text-center my-6">
+              Game Options
+            </h2>
             <div>
-              <p>Number of players</p>
-              {[1, 2, 3, 4].map((i) => (
-                <button key={i} onClick={() => createPlayers(i)}>
-                  {i}
-                </button>
-              ))}
+              <div className="flex gap-2">
+                {[1, 2, 3, 4].map((i) => {
+                  return (
+                    <div
+                      className={`${
+                        i === players?.length
+                          ? "border-color-cyan shadow-color-cyan shadow-md"
+                          : "border-slate-500"
+                      } border p-4 hover:border-color-cyan rounded-md flex flex-col gap-1 justify-between items-center text-white`}
+                      key={i}
+                      onClick={() => {
+                        createPlayers(i);
+                      }}
+                    >
+                      <p className="text-sm text-white">
+                        {i} {i === 1 ? "Player" : "Players"}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             <div>
-              <p className="text-white mb-2">Difficulty level</p>
+              <p className="text-white my-6 text-center">Difficulty level</p>
 
               <div className="grid grid-cols-3 gap-2">
                 <div
@@ -250,12 +286,7 @@ const App = () => {
             </div>
 
             <div>
-              <p className="text-white mb-2">Trainer Names</p>
-              {players?.map((p) => (
-                <p className="text-xl text-white">
-                  {p.id} : {p.score}
-                </p>
-              ))}
+              <p className="text-white text-center my-6">Trainer Names</p>
               <div className="grid grid-cols-2 gap-1">
                 {players?.map((player, index) => {
                   return (
@@ -265,7 +296,6 @@ const App = () => {
                         title={`player${player.id}`}
                         className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
                         onChange={(event) => handlePlayerName(event, player.id)}
-                        name={`player${player.id}`}
                       />
                       <label
                         htmlFor="player"
@@ -276,6 +306,19 @@ const App = () => {
                     </div>
                   );
                 })}
+              </div>
+              <p className="text-white text-center my-6">Scores</p>
+
+              <div className="flex flex-wrap gap-3 border border-color-cyan p-4 rounded-md justify-around">
+                {players?.every((player) => player.name.length > 0) &&
+                  players?.map((p) => (
+                    <div className="flex flex-col gap-1 text-center">
+                      <p className="text-color-cyan font-bold text-xl">
+                        {p.score}
+                      </p>
+                      <p className="text-xl text-white">{p.name}</p>
+                    </div>
+                  ))}
               </div>
             </div>
 
