@@ -26,36 +26,56 @@ const DIFFICULTY_LEVELS = [
   },
 ];
 
+interface Player {
+  id: number;
+  currentTurn: number;
+  isActive: boolean;
+  name: string;
+  score: number;
+}
+
 const App = () => {
+  const [players, setPlayers] = useState<Array<Player>>();
   const [pokemonCards, setPokemonCards] = useState<PokemonCard[] | null>(null);
   const [firstChoice, setFirstChoice] = useState<PokemonCard | null>(null);
   const [secondChoice, setSecondChoice] = useState<PokemonCard | null>(null);
-  const [players, setPlayers] = useState({ player1: "", player2: "" });
   const [turn, setTurn] = useState(0);
-  const [currentPlayer, setCurrentPlayer] = useState("");
+  const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
   const [difficulty, setDifficulty] = useState(0);
+  const [foundMatch, setFoundMatch] = useState(false);
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
-      setTurn((turn) => turn + 1);
-
       if (firstChoice.name === secondChoice.name) {
         matchPairs(firstChoice.name);
+        setFoundMatch(true);
         setTimeout(() => {
           resetCards();
         }, 1000);
       } else {
+        setFoundMatch(false);
         setTimeout(() => {
           resetCards();
         }, 1000);
       }
+      setTurn((turn) => turn + 1);
     }
   }, [firstChoice, secondChoice]);
 
   useEffect(() => {
-    if (turn % 2 === 0) {
-      setCurrentPlayer(players.player1);
-    } else setCurrentPlayer(players.player2);
+    if (!players) return;
+    if (foundMatch) {
+      const player = players.map((p) => {
+        if (p.id === currentPlayerTurn) {
+          return { ...p, score: p.score + 1 };
+        } else return p;
+      });
+      setPlayers(player);
+      return;
+    }
+    if (currentPlayerTurn < players.length) {
+      setCurrentPlayerTurn((prev) => prev + 1);
+    } else setCurrentPlayerTurn(1);
   }, [turn]);
 
   const matchPairs = (choice: string) => {
@@ -77,8 +97,7 @@ const App = () => {
   const startGame = async () => {
     setPokemonCards([]);
     resetCards();
-    setTurn(0);
-    setCurrentPlayer(players.player1);
+    setTurn(1);
     const ids = getRandomNumberArray(
       DIFFICULTY_LEVELS[difficulty].cardQty,
       TOTAL_POKEMONS
@@ -125,11 +144,30 @@ const App = () => {
     return cards;
   };
 
-  const handlePlayerName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPlayers({
-      ...players,
-      [event.target.name]: event.target.value,
+  const handlePlayerName = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    playerId: number
+  ) => {
+    const setNames = players?.map((player) => {
+      if (player.id === playerId) {
+        return { ...player, name: event.target.name };
+      } else return player;
     });
+    setPlayers(setNames);
+  };
+
+  const createPlayers = (numbOfPlayers: number) => {
+    const players: Array<Player> = [];
+    for (let i = 1; i <= numbOfPlayers; i++) {
+      players.push({
+        id: i,
+        currentTurn: 0,
+        isActive: true,
+        name: "",
+        score: 0,
+      });
+    }
+    setPlayers(players);
   };
 
   return (
@@ -152,6 +190,14 @@ const App = () => {
           <div className="col-span-3 lg:col-span-1 bg-color-darkblue rounded-md px-4 py-8 flex flex-col gap-2 justify-around">
             <h2 className="text-white text-2xl font-bold">Game Options</h2>
             <div>
+              <p>Number of players</p>
+              {[1, 2, 3, 4].map((i) => (
+                <button key={i} onClick={() => createPlayers(i)}>
+                  {i}
+                </button>
+              ))}
+            </div>
+            <div>
               <p className="text-white mb-2">Difficulty level</p>
 
               <div className="grid grid-cols-3 gap-2">
@@ -164,7 +210,6 @@ const App = () => {
                   }`}
                 >
                   <img
-                    style={{ imageRendering: "pixelated" }}
                     src="/c1.png"
                     className="aspect-square"
                     alt="charmander"
@@ -180,7 +225,6 @@ const App = () => {
                   }`}
                 >
                   <img
-                    style={{ imageRendering: "pixelated" }}
                     src="/c2.png"
                     className="aspect-square"
                     alt="charmander"
@@ -196,7 +240,6 @@ const App = () => {
                   }`}
                 >
                   <img
-                    style={{ imageRendering: "pixelated" }}
                     src="/c3.png"
                     className="aspect-square"
                     alt="charmander"
@@ -208,30 +251,31 @@ const App = () => {
 
             <div>
               <p className="text-white mb-2">Trainer Names</p>
-
+              {players?.map((p) => (
+                <p className="text-xl text-white">
+                  {p.id} : {p.score}
+                </p>
+              ))}
               <div className="grid grid-cols-2 gap-1">
-                <div className="relative">
-                  <input
-                    title="player1"
-                    className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
-                    onChange={handlePlayerName}
-                    name="player1"
-                  />
-                  <label className="absolute top-1 left-1 text-xs text-color-cyan">
-                    Player 1
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    title="player2"
-                    className="bg-color-lightblue pt-4 pb-1 px-2 w-full rounded-md border text-white focus:outline-color-cyan"
-                    onChange={handlePlayerName}
-                    name="player2"
-                  />
-                  <label className="absolute top-1 left-1 text-xs text-color-cyan">
-                    Player 2
-                  </label>
-                </div>
+                {players?.map((player, index) => {
+                  return (
+                    <div key={index} className="relative">
+                      <input
+                        id="player"
+                        title={`player${player.id}`}
+                        className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
+                        onChange={(event) => handlePlayerName(event, player.id)}
+                        name={`player${player.id}`}
+                      />
+                      <label
+                        htmlFor="player"
+                        className="absolute top-1 left-1 text-xs text-color-cyan"
+                      >
+                        Player {player.id}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -269,13 +313,13 @@ const App = () => {
                 </p>
               )}
             </CardContainer>
-            {currentPlayer ? (
+            {currentPlayerTurn ? (
               <div className="bg-color-darkblue p-3 text-xl rounded-md text-white text-center font-bold absolute bottom-10 left-1/2 -translate-x-1/2">
                 It's{" "}
                 <span className="text-color-cyan font-bold">
-                  {currentPlayer}
+                  {currentPlayerTurn}
                 </span>{" "}
-                turn.
+                player turn.
               </div>
             ) : (
               ""
