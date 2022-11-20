@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import CardContainer from "./components/CardContainer";
+import Modal from "./components/Modal";
 import PokeCard from "./components/PokeCard";
 
 export interface PokemonCard {
@@ -44,6 +45,7 @@ const App = () => {
   const [difficulty, setDifficulty] = useState(0);
   const [foundMatch, setFoundMatch] = useState(false);
   const [pairsFound, setPairsFound] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
@@ -112,6 +114,10 @@ const App = () => {
   };
 
   const startGame = async () => {
+    if (players!.every((player) => player.name.length < 1)) {
+      setIsOpen(true);
+      return;
+    }
     setPokemonCards([]);
     resetCards();
     setCurrentPlayerTurn(0);
@@ -191,6 +197,13 @@ const App = () => {
 
   return (
     <div className="overflow-hidden w-full h-full">
+      {isOpen && (
+        <Modal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          message="Name yourself please!! 🤦"
+        />
+      )}
       <div className="bg-pattern w-full h-full -z-20 absolute" />
       <div className="w-full h-full -z-10 absolute bg-color-cyan/30 backdrop-blur-sm" />
 
