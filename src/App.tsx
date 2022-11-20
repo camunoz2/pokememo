@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CardContainer from "./components/CardContainer";
 import Modal from "./components/Modal";
 import PokeCard from "./components/PokeCard";
+import WinModal from "./components/WinModal";
 
 export interface PokemonCard {
   name: string;
@@ -46,6 +47,7 @@ const App = () => {
   const [foundMatch, setFoundMatch] = useState(false);
   const [pairsFound, setPairsFound] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [win, setWin] = useState(false);
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
@@ -94,7 +96,7 @@ const App = () => {
   }, [turn]);
 
   const gameOver = () => {
-    console.log("You win!");
+    setWin(true);
   };
 
   const matchPairs = (choice: string) => {
@@ -118,6 +120,7 @@ const App = () => {
       setIsOpen(true);
       return;
     }
+    setWin(false);
     setPokemonCards([]);
     resetCards();
     setCurrentPlayerTurn(0);
@@ -198,10 +201,14 @@ const App = () => {
   return (
     <div className="overflow-hidden w-full h-full">
       {isOpen && (
-        <Modal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          message="Name yourself please!! 🤦"
+        <Modal setIsOpen={setIsOpen} message="Name yourself please!! 🤦" />
+      )}
+      {win && (
+        <WinModal
+          setWin={setWin}
+          message={`Game Over! current scores: ${players?.map(
+            (player) => player.name + " : " + player.score
+          )}`}
         />
       )}
       <div className="bg-pattern w-full h-full -z-20 absolute" />
@@ -373,9 +380,9 @@ const App = () => {
               <div className="bg-color-darkblue p-3 text-xl rounded-md text-white text-center font-bold absolute bottom-10 left-1/2 -translate-x-1/2">
                 It's{" "}
                 <span className="text-color-cyan font-bold">
-                  {currentPlayerTurn}
+                  {players ? players[currentPlayerTurn - 1].name : ""}
                 </span>{" "}
-                player turn.
+                turn.
               </div>
             ) : (
               ""
