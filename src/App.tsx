@@ -40,31 +40,43 @@ const App = () => {
   const [firstChoice, setFirstChoice] = useState<PokemonCard | null>(null);
   const [secondChoice, setSecondChoice] = useState<PokemonCard | null>(null);
   const [turn, setTurn] = useState(0);
-  const [currentPlayerId, setCurrentPlayerId] = useState<number>();
+  const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
   const [difficulty, setDifficulty] = useState(0);
+  const [foundMatch, setFoundMatch] = useState(false);
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
-      setTurn((turn) => turn + 1);
-
       if (firstChoice.name === secondChoice.name) {
         matchPairs(firstChoice.name);
+        setFoundMatch(true);
         setTimeout(() => {
           resetCards();
         }, 1000);
       } else {
+        setFoundMatch(false);
         setTimeout(() => {
           resetCards();
         }, 1000);
       }
+      setTurn((turn) => turn + 1);
     }
   }, [firstChoice, secondChoice]);
 
-  // useEffect(() => {
-  //   if (turn % 2 === 0) {
-  //     setCurrentPlayer(players.player1);
-  //   } else setCurrentPlayer(players.player2);
-  // }, [turn]);
+  useEffect(() => {
+    if (!players) return;
+    if (foundMatch) {
+      const player = players.map((p) => {
+        if (p.id === currentPlayerTurn) {
+          return { ...p, score: p.score + 1 };
+        } else return p;
+      });
+      setPlayers(player);
+      return;
+    }
+    if (currentPlayerTurn < players.length) {
+      setCurrentPlayerTurn((prev) => prev + 1);
+    } else setCurrentPlayerTurn(1);
+  }, [turn]);
 
   const matchPairs = (choice: string) => {
     if (pokemonCards) {
@@ -85,8 +97,7 @@ const App = () => {
   const startGame = async () => {
     setPokemonCards([]);
     resetCards();
-    setTurn(0);
-    if (players) setCurrentPlayerId(players[0].id); // Start turn with the first player
+    setTurn(1);
     const ids = getRandomNumberArray(
       DIFFICULTY_LEVELS[difficulty].cardQty,
       TOTAL_POKEMONS
@@ -181,7 +192,9 @@ const App = () => {
             <div>
               <p>Number of players</p>
               {[1, 2, 3, 4].map((i) => (
-                <button onClick={() => createPlayers(i)}>{i}</button>
+                <button key={i} onClick={() => createPlayers(i)}>
+                  {i}
+                </button>
               ))}
             </div>
             <div>
@@ -238,11 +251,15 @@ const App = () => {
 
             <div>
               <p className="text-white mb-2">Trainer Names</p>
-
+              {players?.map((p) => (
+                <p className="text-xl text-white">
+                  {p.id} : {p.score}
+                </p>
+              ))}
               <div className="grid grid-cols-2 gap-1">
                 {players?.map((player, index) => {
                   return (
-                    <div className="relative">
+                    <div key={index} className="relative">
                       <input
                         id="player"
                         title={`player${player.id}`}
@@ -296,13 +313,13 @@ const App = () => {
                 </p>
               )}
             </CardContainer>
-            {currentPlayerId ? (
+            {currentPlayerTurn ? (
               <div className="bg-color-darkblue p-3 text-xl rounded-md text-white text-center font-bold absolute bottom-10 left-1/2 -translate-x-1/2">
                 It's{" "}
                 <span className="text-color-cyan font-bold">
-                  {currentPlayerId}
+                  {currentPlayerTurn}
                 </span>{" "}
-                turn.
+                player turn.
               </div>
             ) : (
               ""
