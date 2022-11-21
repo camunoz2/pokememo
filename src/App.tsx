@@ -97,6 +97,13 @@ const App = () => {
 
   const gameOver = () => {
     setWin(true);
+    setCurrentPlayerTurn(0);
+    setPokemonCards([]);
+    setTurn(1);
+    setPairsFound(0);
+    setPlayers([]);
+    setFirstChoice(null);
+    setSecondChoice(null);
   };
 
   const matchPairs = (choice: string) => {
@@ -312,6 +319,7 @@ const App = () => {
                   return (
                     <div key={index} className="relative">
                       <input
+                        key={index}
                         id="player"
                         title={`player${player.id}`}
                         className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
@@ -331,8 +339,8 @@ const App = () => {
 
               <div className="flex flex-wrap gap-3 border border-color-cyan p-4 rounded-md justify-around">
                 {players?.every((player) => player.name.length > 0) &&
-                  players?.map((p) => (
-                    <div className="flex flex-col gap-1 text-center">
+                  players?.map((p, i) => (
+                    <div key={i} className="flex flex-col gap-1 text-center">
                       <p className="text-color-cyan font-bold text-xl">
                         {p.score}
                       </p>
