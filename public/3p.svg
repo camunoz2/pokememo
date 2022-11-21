@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 23 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-119,-228)">
+        <g id="_3p" serif:id="3p">
+            <g id="person" transform="matrix(0.115359,0,0,0.115359,119.102,242.064)">
+                <path d="M85.347,90C85.347,67.717 67.283,49.653 45,49.653C22.717,49.653 4.653,67.717 4.653,90L85.347,90Z" style="fill-rule:nonzero;stroke:white;stroke-width:2.33px;"/>
+                <circle cx="45.003" cy="21.413" r="21.413" style="stroke:white;stroke-width:2.33px;"/>
+            </g>
+            <g id="person1" serif:id="person" transform="matrix(0.115359,0,0,0.115359,125.222,228.611)">
+                <path d="M85.347,90C85.347,67.717 67.283,49.653 45,49.653C22.717,49.653 4.653,67.717 4.653,90L85.347,90Z" style="fill-rule:nonzero;stroke:white;stroke-width:2.33px;"/>
+                <circle cx="45.003" cy="21.413" r="21.413" style="stroke:white;stroke-width:2.33px;"/>
+            </g>
+            <g id="person2" serif:id="person" transform="matrix(0.115359,0,0,0.115359,131.342,242.064)">
+                <path d="M85.347,90C85.347,67.717 67.283,49.653 45,49.653C22.717,49.653 4.653,67.717 4.653,90L85.347,90Z" style="fill-rule:nonzero;stroke:white;stroke-width:2.33px;"/>
+                <circle cx="45.003" cy="21.413" r="21.413" style="stroke:white;stroke-width:2.33px;"/>
+            </g>
+        </g>
+    </g>
+</svg>
