@@ -227,7 +227,9 @@ const App = () => {
             <h1 className="text-xl font-bold">Pokememorize</h1>
             <p className="text-xs">by ArjelDev</p>
           </div>
-          <img src="/github.svg" alt="github icon" />
+          <a href="https://github.com/camunoz2/pokememo">
+            <img src="/github.svg" alt="github icon" />
+          </a>
         </div>
       </div>
 
