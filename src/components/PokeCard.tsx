@@ -1,5 +1,5 @@
+import { PokemonCard } from "../customTypes";
 import styles from "./PokeCard.module.css";
-import { PokemonCard } from "../App";
 
 interface Props {
   name: string;
