@@ -12,7 +12,7 @@ import { OptionsSideBar } from "./components/OptionsSideBar";
 import { TurnIndicator } from "./components/TurnIndicator";
 
 const App = () => {
-  const [players, setPlayers] = useState<Array<Player>>();
+  const [players, setPlayers] = useState<Player[]>();
   const [pokemonCards, setPokemonCards] = useState<PokemonCard[] | null>(null);
   const [firstChoice, setFirstChoice] = useState<PokemonCard | null>(null);
   const [secondChoice, setSecondChoice] = useState<PokemonCard | null>(null);
