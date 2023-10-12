@@ -4,37 +4,12 @@ import CardContainer from "./components/CardContainer";
 import Modal from "./components/Modal";
 import PokeCard from "./components/PokeCard";
 import WinModal from "./components/WinModal";
-
-export interface PokemonCard {
-  name: string;
-  image: string;
-  isMatched: boolean;
-  id: number;
-}
-
-const TOTAL_POKEMONS = 151;
-const DIFFICULTY_LEVELS = [
-  {
-    level: "easy",
-    cardQty: 2,
-  },
-  {
-    level: "medium",
-    cardQty: 12,
-  },
-  {
-    level: "hard",
-    cardQty: 24,
-  },
-];
-
-interface Player {
-  id: number;
-  currentTurn: number;
-  isActive: boolean;
-  name: string;
-  score: number;
-}
+import type { PokemonCard, Player } from "./customTypes";
+import { TOTAL_POKEMONS, DIFFICULTY_LEVELS } from "./gameConfig";
+import { Background } from "./components/Background";
+import { Header } from "./components/Header";
+import { OptionsSideBar } from "./components/OptionsSideBar";
+import { TurnIndicator } from "./components/TurnIndicator";
 
 const App = () => {
   const [players, setPlayers] = useState<Array<Player>>();
@@ -208,7 +183,7 @@ const App = () => {
   return (
     <div className="overflow-hidden w-full h-full">
       {isOpen && (
-        <Modal setIsOpen={setIsOpen} message="Name yourself please!! 🤦" />
+        <Modal setIsOpen={setIsOpen} message="Primero escribe tu nombre" />
       )}
       {win && (
         <WinModal
@@ -218,149 +193,20 @@ const App = () => {
           )}`}
         />
       )}
-      <div className="bg-pattern w-full h-full -z-20 absolute" />
-      <div className="w-full h-full -z-10 absolute bg-color-cyan/30 backdrop-blur-sm" />
-
-      <div className="bg-color-darkblue py-2 drop-shadow-md">
-        <div className="container mx-auto flex justify-between">
-          <div className="text-white">
-            <h1 className="text-xl font-bold">Pokememorize</h1>
-            <p className="text-xs">by ArjelDev</p>
-          </div>
-          <a href="https://github.com/camunoz2/pokememo">
-            <img src="/github.svg" alt="github icon" />
-          </a>
-        </div>
-      </div>
+      <Background />
+      <Header />
 
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-4">
-          <div className="col-span-3 lg:col-span-1 bg-color-darkblue rounded-md px-4 py-8 flex flex-col gap-2 justify-around">
-            <h2 className="text-white text-2xl font-bold text-center my-6">
-              Game Options
-            </h2>
-            <div>
-              <div className="flex gap-2">
-                {[1, 2, 3, 4].map((i) => {
-                  return (
-                    <div
-                      className={`${
-                        i === players?.length
-                          ? "border-color-cyan shadow-color-cyan shadow-md"
-                          : "border-slate-500"
-                      } border p-4 hover:border-color-cyan rounded-md flex flex-col gap-1 justify-between items-center text-white`}
-                      key={i}
-                      onClick={() => {
-                        createPlayers(i);
-                      }}
-                    >
-                      <p className="text-sm text-white">
-                        {i} {i === 1 ? "Player" : "Players"}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div>
-              <p className="text-white my-6 text-center">Difficulty level</p>
+          <OptionsSideBar
+            createPlayers={createPlayers}
+            difficulty={difficulty}
+            handlePlayerName={handlePlayerName}
+            players={players}
+            setDifficulty={setDifficulty}
+            startGame={startGame}
+          />
 
-              <div className="grid grid-cols-3 gap-2">
-                <div
-                  onClick={() => setDifficulty(0)}
-                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                    difficulty === 0
-                      ? "border border-color-cyan shadow-color-cyan shadow-md "
-                      : ""
-                  }`}
-                >
-                  <img
-                    src="/c1.png"
-                    className="aspect-square"
-                    alt="charmander"
-                  />
-                  <p className="text-xl text-color-cyan">easy</p>
-                </div>
-                <div
-                  onClick={() => setDifficulty(1)}
-                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                    difficulty === 1
-                      ? "border border-color-cyan shadow-color-cyan shadow-md "
-                      : ""
-                  }`}
-                >
-                  <img
-                    src="/c2.png"
-                    className="aspect-square"
-                    alt="charmander"
-                  />
-                  <p className="text-xl text-color-cyan">medium</p>
-                </div>
-                <div
-                  onClick={() => setDifficulty(2)}
-                  className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-                    difficulty === 2
-                      ? "border border-color-cyan shadow-color-cyan shadow-md "
-                      : ""
-                  }`}
-                >
-                  <img
-                    src="/c3.png"
-                    className="aspect-square"
-                    alt="charmander"
-                  />
-                  <p className="text-xl text-color-cyan">hard</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-white text-center my-6">Trainer Names</p>
-              <div className="grid grid-cols-2 gap-1">
-                {players?.map((player, index) => {
-                  return (
-                    <div key={index} className="relative">
-                      <input
-                        key={index}
-                        id="player"
-                        title={`player${player.id}`}
-                        className="bg-color-lightblue w-full pt-4 pb-1 px-2 rounded-md border text-white focus:outline-color-cyan"
-                        onChange={(event) => handlePlayerName(event, player.id)}
-                      />
-                      <label
-                        htmlFor="player"
-                        className="absolute top-1 left-1 text-xs text-color-cyan"
-                      >
-                        Player {player.id}
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="text-white text-center my-6">Scores</p>
-
-              <div className="flex flex-wrap gap-3 border border-color-cyan p-4 rounded-md justify-around">
-                {players?.every((player) => player.name.length > 0) &&
-                  players?.map((p, i) => (
-                    <div key={i} className="flex flex-col gap-1 text-center">
-                      <p className="text-color-cyan font-bold text-xl">
-                        {p.score}
-                      </p>
-                      <p className="text-xl text-white">{p.name}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-
-            <div className="flex justify-center">
-              <button
-                className="text-xl text-white w-full bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow"
-                onClick={startGame}
-              >
-                Play
-              </button>
-            </div>
-          </div>
           <div className="col-span-3 lg:col-span-2 bg-color-darkblue rounded-md">
             <CardContainer>
               {pokemonCards ? (
@@ -387,13 +233,10 @@ const App = () => {
               )}
             </CardContainer>
             {currentPlayerTurn ? (
-              <div className="bg-color-darkblue p-3 text-xl rounded-md text-white text-center font-bold absolute bottom-10 left-1/2 -translate-x-1/2">
-                It's{" "}
-                <span className="text-color-cyan font-bold">
-                  {players ? players[currentPlayerTurn - 1].name : ""}
-                </span>{" "}
-                turn.
-              </div>
+              <TurnIndicator
+                currentPlayerTurn={currentPlayerTurn}
+                players={players}
+              />
             ) : (
               ""
             )}
