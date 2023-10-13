@@ -13,16 +13,34 @@ import { TurnIndicator } from "./components/TurnIndicator";
 
 const App = () => {
   const [players, setPlayers] = useState<Player[]>();
-  const [pokemonCards, setPokemonCards] = useState<PokemonCard[] | null>(null);
-  const [firstChoice, setFirstChoice] = useState<PokemonCard | null>(null);
-  const [secondChoice, setSecondChoice] = useState<PokemonCard | null>(null);
+  const [pokemonCards, setPokemonCards] = useState<PokemonCard[]>();
+  const [firstChoice, setFirstChoice] = useState<PokemonCard>();
+  const [secondChoice, setSecondChoice] = useState<PokemonCard>();
   const [turn, setTurn] = useState(0);
   const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
   const [difficulty, setDifficulty] = useState(0);
   const [foundMatch, setFoundMatch] = useState(false);
   const [pairsFound, setPairsFound] = useState(0);
+
+  // This open or closes a modal. The modal opens if the players dont have a name
   const [isOpen, setIsOpen] = useState(false);
+
   const [win, setWin] = useState(false);
+
+  const openWarningModal = () => {
+    setIsOpen(true);
+  };
+
+  const isGameReadyToPlay = (): boolean => {
+    // are players selected?
+    if (!players) return false;
+
+    // players have a name?
+    if (players.every((player) => player.name.length < 1)) {
+      openWarningModal();
+      return false;
+    } else return true;
+  };
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
@@ -98,10 +116,6 @@ const App = () => {
   };
 
   const startGame = async () => {
-    if (players!.every((player) => player.name.length < 1)) {
-      setIsOpen(true);
-      return;
-    }
     setWin(false);
     setPokemonCards([]);
     resetCards();
@@ -167,7 +181,7 @@ const App = () => {
   };
 
   const createPlayers = (numbOfPlayers: number) => {
-    const players: Array<Player> = [];
+    const players: Player[] = [];
     for (let i = 1; i <= numbOfPlayers; i++) {
       players.push({
         id: i,
