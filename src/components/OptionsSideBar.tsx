@@ -1,4 +1,6 @@
 import { Player } from "../customTypes";
+import { DIFFICULTY_LEVELS } from "../gameConfig";
+import { DiffilcultyPicker } from "./DifficultyPicker";
 
 interface OptionsProps {
   players: Player[] | undefined;
@@ -52,39 +54,16 @@ export const OptionsSideBar = ({
         <p className="text-white my-6 text-center">Difficulty level</p>
 
         <div className="grid grid-cols-3 gap-2">
-          <div
-            onClick={() => setDifficulty(0)}
-            className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-              difficulty === 0
-                ? "border border-color-cyan shadow-color-cyan shadow-md "
-                : ""
-            }`}
-          >
-            <img src="/c1.png" className="aspect-square" alt="charmander" />
-            <p className="text-xl text-color-cyan">easy</p>
-          </div>
-          <div
-            onClick={() => setDifficulty(1)}
-            className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-              difficulty === 1
-                ? "border border-color-cyan shadow-color-cyan shadow-md "
-                : ""
-            }`}
-          >
-            <img src="/c2.png" className="aspect-square" alt="charmander" />
-            <p className="text-xl text-color-cyan">medium</p>
-          </div>
-          <div
-            onClick={() => setDifficulty(2)}
-            className={`bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all ${
-              difficulty === 2
-                ? "border border-color-cyan shadow-color-cyan shadow-md "
-                : ""
-            }`}
-          >
-            <img src="/c3.png" className="aspect-square" alt="charmander" />
-            <p className="text-xl text-color-cyan">hard</p>
-          </div>
+          {DIFFICULTY_LEVELS.map((d) => (
+            <DiffilcultyPicker
+              key={d.difficulty}
+              difficulty={difficulty}
+              handleDifficulty={setDifficulty}
+              image={d.image}
+              text={d.text}
+              level={d.difficulty}
+            />
+          ))}
         </div>
       </div>
 

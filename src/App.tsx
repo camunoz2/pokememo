@@ -10,37 +10,61 @@ import { Background } from "./components/Background";
 import { Header } from "./components/Header";
 import { OptionsSideBar } from "./components/OptionsSideBar";
 import { TurnIndicator } from "./components/TurnIndicator";
+import { useGameState } from "./hooks/useGameState";
 
 const App = () => {
   const [players, setPlayers] = useState<Player[]>();
+  const [difficulty, setDifficulty] = useState<number>();
+  const { status, isPlayable } = useGameState(players, difficulty);
+
   const [pokemonCards, setPokemonCards] = useState<PokemonCard[]>();
   const [firstChoice, setFirstChoice] = useState<PokemonCard>();
   const [secondChoice, setSecondChoice] = useState<PokemonCard>();
   const [turn, setTurn] = useState(0);
   const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
-  const [difficulty, setDifficulty] = useState(0);
   const [foundMatch, setFoundMatch] = useState(false);
   const [pairsFound, setPairsFound] = useState(0);
 
   // This open or closes a modal. The modal opens if the players dont have a name
-  const [isOpen, setIsOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
   const [win, setWin] = useState(false);
 
-  const openWarningModal = () => {
-    setIsOpen(true);
-  };
+  console.log(isPlayable);
 
-  const isGameReadyToPlay = (): boolean => {
-    // are players selected?
-    if (!players) return false;
+  async function startGame() {
+    // check game state
+    if (!isPlayable) {
+      setIsWarningModalOpen(true);
+      return;
+    }
 
-    // players have a name?
-    if (players.every((player) => player.name.length < 1)) {
-      openWarningModal();
-      return false;
-    } else return true;
-  };
+    // 1. Init cards
+    setPokemonCards([]);
+
+    // 2. get cards from API
+    await getCards();
+
+    // 3. Init game logic
+    setWin(false);
+    setCurrentPlayerTurn(0);
+    setTurn(1);
+    setPairsFound(0);
+  }
+
+  function resetCards() {
+    setFirstChoice(undefined);
+    setSecondChoice(undefined);
+  }
+
+  function gameOver() {
+    setWin(true);
+    setCurrentPlayerTurn(0);
+    setPokemonCards([]);
+    setTurn(1);
+    setPairsFound(0);
+    setPlayers([]);
+  }
 
   useEffect(() => {
     if (firstChoice && secondChoice) {
@@ -88,18 +112,7 @@ const App = () => {
     } else setCurrentPlayerTurn(1);
   }, [turn]);
 
-  const gameOver = () => {
-    setWin(true);
-    setCurrentPlayerTurn(0);
-    setPokemonCards([]);
-    setTurn(1);
-    setPairsFound(0);
-    setPlayers([]);
-    setFirstChoice(null);
-    setSecondChoice(null);
-  };
-
-  const matchPairs = (choice: string) => {
+  function matchPairs(choice: string) {
     if (pokemonCards) {
       const changedArr = pokemonCards.map((item) => {
         if (item.name === choice) {
@@ -108,20 +121,9 @@ const App = () => {
       });
       setPokemonCards([...changedArr]);
     }
-  };
+  }
 
-  const resetCards = () => {
-    setFirstChoice(null);
-    setSecondChoice(null);
-  };
-
-  const startGame = async () => {
-    setWin(false);
-    setPokemonCards([]);
-    resetCards();
-    setCurrentPlayerTurn(0);
-    setTurn(1);
-    setPairsFound(0);
+  async function getCards() {
     const ids = getRandomNumberArray(
       DIFFICULTY_LEVELS[difficulty].cardQty,
       TOTAL_POKEMONS
@@ -134,25 +136,25 @@ const App = () => {
     }));
     const randomizedPokemonCards = getSortedArray(withUniqueIds);
     setPokemonCards(randomizedPokemonCards);
-  };
+  }
 
-  const cardSelector = (card: PokemonCard) => {
+  function cardSelector(card: PokemonCard) {
     firstChoice ? setSecondChoice(card) : setFirstChoice(card);
-  };
+  }
 
-  const getRandomNumberArray = (quantity: number, maxValue: number) => {
+  function getRandomNumberArray(quantity: number, maxValue: number) {
     let ids = [];
     for (let i = 0; i < quantity; i++) {
       ids.push(Math.max(1, Math.floor(Math.random() * maxValue + 1)));
     }
     return ids;
-  };
+  }
 
-  const getSortedArray = (arr: PokemonCard[]) => {
+  function getSortedArray(arr: PokemonCard[]) {
     return arr.sort(() => Math.random() - 0.5);
-  };
+  }
 
-  const getPokemonCards = async (ids: number[]) => {
+  async function getPokemonCards(ids: number[]) {
     // here i have two options a for...of or a Promise.all
     let cards: PokemonCard[] = [];
     for (const id of ids) {
@@ -166,21 +168,21 @@ const App = () => {
       });
     }
     return cards;
-  };
+  }
 
-  const handlePlayerName = (
+  function handlePlayerName(
     event: React.ChangeEvent<HTMLInputElement>,
     playerId: number
-  ) => {
+  ) {
     const setNames = players?.map((player) => {
       if (player.id === playerId) {
         return { ...player, name: event.target.value };
       } else return player;
     });
     setPlayers(setNames);
-  };
+  }
 
-  const createPlayers = (numbOfPlayers: number) => {
+  function createPlayers(numbOfPlayers: number) {
     const players: Player[] = [];
     for (let i = 1; i <= numbOfPlayers; i++) {
       players.push({
@@ -192,12 +194,12 @@ const App = () => {
       });
     }
     setPlayers(players);
-  };
+  }
 
   return (
     <div className="overflow-hidden w-full h-full">
-      {isOpen && (
-        <Modal setIsOpen={setIsOpen} message="Primero escribe tu nombre" />
+      {isWarningModalOpen && (
+        <Modal setIsOpen={setIsWarningModalOpen} message={status} />
       )}
       {win && (
         <WinModal
