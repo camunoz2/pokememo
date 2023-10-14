@@ -30,26 +30,32 @@ const App = () => {
 
   const [win, setWin] = useState(false);
 
-  console.log(isPlayable);
-
   async function startGame() {
-    // check game state
     if (!isPlayable) {
       setIsWarningModalOpen(true);
       return;
     }
 
-    // 1. Init cards
     setPokemonCards([]);
-
-    // 2. get cards from API
     await getCards();
-
-    // 3. Init game logic
     setWin(false);
     setCurrentPlayerTurn(0);
     setTurn(1);
     setPairsFound(0);
+  }
+
+  function createPlayers(numbOfPlayers: number) {
+    const players: Player[] = [];
+    for (let i = 1; i <= numbOfPlayers; i++) {
+      players.push({
+        id: i,
+        currentTurn: 0,
+        isActive: true,
+        name: "",
+        score: 0,
+      });
+    }
+    setPlayers(players);
   }
 
   function resetCards() {
@@ -125,7 +131,7 @@ const App = () => {
 
   async function getCards() {
     const ids = getRandomNumberArray(
-      DIFFICULTY_LEVELS[difficulty].cardQty,
+      DIFFICULTY_LEVELS[difficulty!].cardQty,
       TOTAL_POKEMONS
     );
     const cards = await getPokemonCards(ids);
@@ -182,20 +188,6 @@ const App = () => {
     setPlayers(setNames);
   }
 
-  function createPlayers(numbOfPlayers: number) {
-    const players: Player[] = [];
-    for (let i = 1; i <= numbOfPlayers; i++) {
-      players.push({
-        id: i,
-        currentTurn: 0,
-        isActive: true,
-        name: "",
-        score: 0,
-      });
-    }
-    setPlayers(players);
-  }
-
   return (
     <div className="overflow-hidden w-full h-full">
       {isWarningModalOpen && (
@@ -244,7 +236,7 @@ const App = () => {
                 })
               ) : (
                 <p className="self-center text-2xl font-bold text-color-cyan">
-                  Configure game options to play!
+                  Configura las opciones para jugar!
                 </p>
               )}
             </CardContainer>

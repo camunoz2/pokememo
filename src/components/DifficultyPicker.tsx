@@ -1,7 +1,7 @@
 interface Props {
   level: number;
   handleDifficulty: (difficultyLevel: number) => void;
-  difficulty: number;
+  difficulty?: number;
   image: string;
   text: string;
 }

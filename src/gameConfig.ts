@@ -1,19 +1,19 @@
 const TOTAL_POKEMONS = 151;
 const DIFFICULTY_LEVELS = [
   {
-    text: "Easy",
+    text: "Fácil",
     cardQty: 2,
     image: "/c1.png",
     difficulty: 0,
   },
   {
-    text: "Medium",
+    text: "Normal",
     cardQty: 12,
     image: "/c2.png",
     difficulty: 1,
   },
   {
-    text: "Hard",
+    text: "Difícil",
     cardQty: 24,
     image: "/c3.png",
     difficulty: 2,

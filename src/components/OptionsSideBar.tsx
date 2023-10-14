@@ -6,7 +6,7 @@ interface OptionsProps {
   players: Player[] | undefined;
   createPlayers: (numberOfPlayers: number) => void;
   setDifficulty: (difficultyLevel: number) => void;
-  difficulty: number;
+  difficulty?: number;
   handlePlayerName: (
     event: React.ChangeEvent<HTMLInputElement>,
     playerId: number
@@ -22,14 +22,16 @@ export const OptionsSideBar = ({
   setDifficulty,
   startGame,
 }: OptionsProps) => {
+  const numOfPlayers = [1, 2, 3, 4];
+
   return (
     <div className="col-span-3 lg:col-span-1 bg-color-darkblue rounded-md px-4 py-8 flex flex-col gap-2 justify-around">
       <h2 className="text-white text-2xl font-bold text-center my-6">
-        Game Options
+        Opciones
       </h2>
       <div>
         <div className="flex gap-2">
-          {[1, 2, 3, 4].map((i) => {
+          {numOfPlayers.map((i) => {
             return (
               <div
                 className={`${
@@ -43,7 +45,7 @@ export const OptionsSideBar = ({
                 }}
               >
                 <p className="text-sm text-white">
-                  {i} {i === 1 ? "Player" : "Players"}
+                  {i} {i === 1 ? "Jugador" : "Jugadores"}
                 </p>
               </div>
             );
@@ -51,7 +53,7 @@ export const OptionsSideBar = ({
         </div>
       </div>
       <div>
-        <p className="text-white my-6 text-center">Difficulty level</p>
+        <p className="text-white my-6 text-center">Dificultad</p>
 
         <div className="grid grid-cols-3 gap-2">
           {DIFFICULTY_LEVELS.map((d) => (
@@ -68,7 +70,7 @@ export const OptionsSideBar = ({
       </div>
 
       <div>
-        <p className="text-white text-center my-6">Trainer Names</p>
+        <p className="text-white text-center my-6">Entrenadores</p>
         <div className="grid grid-cols-2 gap-1">
           {players?.map((player, index) => {
             return (
@@ -90,7 +92,7 @@ export const OptionsSideBar = ({
             );
           })}
         </div>
-        <p className="text-white text-center my-6">Scores</p>
+        <p className="text-white text-center my-6">Puntaje</p>
 
         <div className="flex flex-wrap gap-3 border border-color-cyan p-4 rounded-md justify-around">
           {players?.every((player) => player.name.length > 0) &&
@@ -108,7 +110,7 @@ export const OptionsSideBar = ({
           className="text-xl text-white w-full bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow"
           onClick={startGame}
         >
-          Play
+          Jugar
         </button>
       </div>
     </div>
