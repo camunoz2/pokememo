@@ -16,18 +16,14 @@ const App = () => {
   const [players, setPlayers] = useState<Player[]>();
   const [difficulty, setDifficulty] = useState<number>();
   const { status, isPlayable } = useGameState(players, difficulty);
-
   const [pokemonCards, setPokemonCards] = useState<PokemonCard[]>();
-  const [firstChoice, setFirstChoice] = useState<PokemonCard>();
-  const [secondChoice, setSecondChoice] = useState<PokemonCard>();
+  const [firstCardSelected, setFirstCardSelected] = useState<PokemonCard>();
+  const [secondCardSelected, setSecondCardSelected] = useState<PokemonCard>();
   const [turn, setTurn] = useState(0);
   const [currentPlayerTurn, setCurrentPlayerTurn] = useState<number>(0);
   const [foundMatch, setFoundMatch] = useState(false);
   const [pairsFound, setPairsFound] = useState(0);
-
-  // This open or closes a modal. The modal opens if the players dont have a name
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-
   const [win, setWin] = useState(false);
 
   useEffect(() => {
@@ -59,9 +55,9 @@ const App = () => {
   }, [turn]);
 
   useEffect(() => {
-    if (firstChoice && secondChoice) {
-      if (firstChoice.name === secondChoice.name) {
-        matchPairs(firstChoice.name);
+    if (firstCardSelected && secondCardSelected) {
+      if (firstCardSelected.name === secondCardSelected.name) {
+        matchPairs(firstCardSelected.name);
         setFoundMatch(true);
         setTimeout(() => {
           resetChoices();
@@ -74,7 +70,7 @@ const App = () => {
       }
       setTurn((turn) => turn + 1);
     }
-  }, [firstChoice, secondChoice]);
+  }, [firstCardSelected, secondCardSelected]);
 
   async function startGame() {
     if (!isPlayable) {
@@ -105,8 +101,8 @@ const App = () => {
   }
 
   function resetChoices() {
-    setFirstChoice(undefined);
-    setSecondChoice(undefined);
+    setFirstCardSelected(undefined);
+    setSecondCardSelected(undefined);
   }
 
   function resetGameOptions() {
@@ -148,7 +144,9 @@ const App = () => {
   }
 
   function cardSelector(card: PokemonCard) {
-    firstChoice ? setSecondChoice(card) : setFirstChoice(card);
+    firstCardSelected
+      ? setSecondCardSelected(card)
+      : setFirstCardSelected(card);
   }
 
   function getRandomNumberArray(quantity: number, maxValue: number) {
@@ -225,8 +223,8 @@ const App = () => {
                   return (
                     <PokeCard
                       flipped={
-                        firstChoice === card ||
-                        secondChoice === card ||
+                        firstCardSelected === card ||
+                        secondCardSelected === card ||
                         card.isMatched
                       }
                       cardSelector={cardSelector}
