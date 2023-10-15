@@ -30,15 +30,61 @@ const App = () => {
 
   const [win, setWin] = useState(false);
 
+  useEffect(() => {
+    if (!pokemonCards) return;
+    if (foundMatch) setPairsFound((prev) => prev + 1);
+  }, [turn]);
+
+  useEffect(() => {
+    if (!pokemonCards) return;
+    if (pokemonCards.length > 0 && pairsFound === pokemonCards.length / 2) {
+      setWin(true);
+    }
+  }, [pairsFound]);
+
+  useEffect(() => {
+    if (!players) return;
+    if (foundMatch) {
+      const player = players.map((p) => {
+        if (p.id === currentPlayerTurn) {
+          return { ...p, score: p.score + 1 };
+        } else return p;
+      });
+      setPlayers(player);
+      return;
+    }
+    if (currentPlayerTurn < players.length) {
+      setCurrentPlayerTurn((prev) => prev + 1);
+    } else setCurrentPlayerTurn(1);
+  }, [turn]);
+
+  useEffect(() => {
+    if (firstChoice && secondChoice) {
+      if (firstChoice.name === secondChoice.name) {
+        matchPairs(firstChoice.name);
+        setFoundMatch(true);
+        setTimeout(() => {
+          resetChoices();
+        }, 1000);
+      } else {
+        setFoundMatch(false);
+        setTimeout(() => {
+          resetChoices();
+        }, 1000);
+      }
+      setTurn((turn) => turn + 1);
+    }
+  }, [firstChoice, secondChoice]);
+
   async function startGame() {
     if (!isPlayable) {
       setIsWarningModalOpen(true);
       return;
     }
-
-    setPokemonCards([]);
-    await getCards();
     setWin(false);
+    setPokemonCards([]);
+    resetChoices();
+    await getCards();
     setCurrentPlayerTurn(0);
     setTurn(1);
     setPairsFound(0);
@@ -58,65 +104,22 @@ const App = () => {
     setPlayers(players);
   }
 
-  function resetCards() {
+  function resetChoices() {
     setFirstChoice(undefined);
     setSecondChoice(undefined);
   }
 
-  function gameOver() {
-    setWin(true);
-    setCurrentPlayerTurn(0);
+  function resetGameOptions() {
+    setWin(false);
+    setPlayers(undefined);
+    setDifficulty(undefined);
     setPokemonCards([]);
-    setTurn(1);
+    resetChoices();
+    setTurn(0);
+    setCurrentPlayerTurn(0);
+    setFoundMatch(false);
     setPairsFound(0);
-    setPlayers([]);
   }
-
-  useEffect(() => {
-    if (firstChoice && secondChoice) {
-      if (firstChoice.name === secondChoice.name) {
-        matchPairs(firstChoice.name);
-        setFoundMatch(true);
-        setTimeout(() => {
-          resetCards();
-        }, 1000);
-      } else {
-        setFoundMatch(false);
-        setTimeout(() => {
-          resetCards();
-        }, 1000);
-      }
-      setTurn((turn) => turn + 1);
-    }
-  }, [firstChoice, secondChoice]);
-
-  useEffect(() => {
-    if (!pokemonCards) return;
-    if (foundMatch) setPairsFound((prev) => prev + 1);
-  }, [turn]);
-
-  useEffect(() => {
-    if (!pokemonCards) return;
-    if (pairsFound === pokemonCards.length / 2) {
-      gameOver();
-    }
-  }, [pairsFound]);
-
-  useEffect(() => {
-    if (!players) return;
-    if (foundMatch) {
-      const player = players.map((p) => {
-        if (p.id === currentPlayerTurn) {
-          return { ...p, score: p.score + 1 };
-        } else return p;
-      });
-      setPlayers(player);
-      return;
-    }
-    if (currentPlayerTurn < players.length) {
-      setCurrentPlayerTurn((prev) => prev + 1);
-    } else setCurrentPlayerTurn(1);
-  }, [turn]);
 
   function matchPairs(choice: string) {
     if (pokemonCards) {
@@ -195,7 +198,7 @@ const App = () => {
       )}
       {win && (
         <WinModal
-          setWin={setWin}
+          resetGame={resetGameOptions}
           message={`Game Over! current scores: ${players?.map(
             (player) => player.name + " : " + player.score
           )}`}
