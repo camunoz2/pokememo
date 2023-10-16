@@ -1,8 +1,9 @@
 import { createContext, useContext, useState } from "react";
-import type { GameContextOptions } from "../customTypes";
+import type { GameContextOptions, GameOptions } from "../customTypes";
 import { difficultyOptions } from "../defaultSettings";
+import React from "react";
 
-const defaultOptions: GameContextOptions = {
+const defaultGameOptions: GameOptions = {
   numberOfPlayers: 1,
   gameDifficulty: difficultyOptions[0],
   numberOfTurns: 0,
@@ -11,26 +12,21 @@ const defaultOptions: GameContextOptions = {
   isGameStarted: false,
 };
 
-const GameContext = createContext<GameContextOptions | undefined>(undefined);
+const GameContext = createContext<GameContextOptions | null>(null);
 
 function GameContextProvider({ children }: { children: React.ReactNode }) {
-  const [gameContext, setGameContext] =
-    useState<GameContextOptions>(defaultOptions);
-
-  const updateGameContext = (newContext: GameContextOptions) => {
-    setGameContext({ ...gameContext, ...newContext });
-  };
-
-  const contextValue = { ...gameContext, updateGameContext };
+  const [gameContext, setGameContext] = useState(defaultGameOptions);
 
   return (
-    <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>
+    <GameContext.Provider value={{ gameContext, setGameContext }}>
+      {children}
+    </GameContext.Provider>
   );
 }
 
 function useGameContext() {
   const context = useContext(GameContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("The context is not defined");
   }
   return context;

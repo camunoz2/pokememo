@@ -5,14 +5,14 @@ import { Options } from "./components/Options";
 import { useGameContext } from "./context/gameContex";
 
 const App = () => {
-  const { isGameStarted } = useGameContext();
+  const { gameContext } = useGameContext();
   return (
     <div className="overflow-hidden w-full h-full">
       <Header />
       <Background />
-      {!isGameStarted && <Options />}
+      {!gameContext.isGameStarted && <Options />}
       <div className="container mx-auto">
-        <GameBoard>Test</GameBoard>
+        <GameBoard>{gameContext.gameDifficulty.label}</GameBoard>
       </div>
     </div>
   );

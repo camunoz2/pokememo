@@ -15,11 +15,16 @@ export interface Difficulty {
   icon: string;
 }
 
-export interface GameContextOptions {
+export interface GameOptions {
   numberOfPlayers: number;
   gameDifficulty: Difficulty;
   numberOfTurns: number;
   isGameStarted: boolean;
   isGameEnded: boolean;
   foundPairs: Set<string>;
+}
+
+export interface GameContextOptions {
+  gameContext: GameOptions;
+  setGameContext: React.Dispatch<React.SetStateAction<GameOptions>>;
 }

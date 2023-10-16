@@ -1,14 +1,15 @@
 import { DiffilcultyPicker } from "./DifficultyPicker";
 import { difficultyOptions, players } from "../defaultSettings";
 import PlayerPicker from "./PlayerPicker";
-import { useContext } from "react";
-import { GameContext } from "../context/gameContex";
-import { Difficulty } from "../customTypes";
+import { useGameContext } from "../context/gameContex";
+import type { Difficulty } from "../customTypes";
 
 export const Options = () => {
-  const { gameContext, updateGameContext } = useContext(GameContext);
+  const { gameContext, setGameContext } = useGameContext();
 
-  function handleDifficulty(difficulty: Difficulty) {}
+  function setDifficulty(difficulty: Difficulty) {
+    setGameContext({ ...gameContext, gameDifficulty: difficulty });
+  }
 
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
@@ -31,7 +32,7 @@ export const Options = () => {
             {difficultyOptions.map((difficulty) => (
               <DiffilcultyPicker
                 difficulty={difficulty}
-                selectDifficulty={handleDifficulty}
+                selectDifficulty={setDifficulty}
               />
             ))}
           </div>
