@@ -1,7 +1,7 @@
 import type React from "react";
-import type { GameContextOptions, GameOptions } from "../customTypes";
 import { createContext, useContext, useState } from "react";
 import { difficultyOptions } from "../defaultSettings";
+import { GameOptions, GameContextOptions } from "../customTypes";
 
 const defaultGameOptions: GameOptions = {
   numberOfPlayers: 1,

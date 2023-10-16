@@ -4,6 +4,14 @@ export interface Player {
   score: number;
 }
 
+export interface Pokemon {
+  id: number;
+  name: string;
+  sprite: {
+    front_default: string;
+  };
+}
+
 export interface Card {
   name: string;
   image: string;

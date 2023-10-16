@@ -1,3 +1,4 @@
+import { useGameContext } from "../context";
 import type { Difficulty } from "../customTypes";
 
 interface Props {
@@ -6,10 +7,13 @@ interface Props {
 }
 
 export function DiffilcultyPicker({ difficulty, selectDifficulty }: Props) {
+  const { gameContext } = useGameContext();
   return (
     <button
       onClick={() => selectDifficulty(difficulty)}
-      className="bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all"
+      className={`${
+        gameContext.gameDifficulty === difficulty && "bg-teal-500"
+      } bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all`}
     >
       <img
         src={difficulty.icon}

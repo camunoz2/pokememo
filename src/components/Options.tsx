@@ -2,9 +2,13 @@ import type { Difficulty } from "../customTypes";
 import { DiffilcultyPicker } from "./DifficultyPicker";
 import { difficultyOptions, players } from "../defaultSettings";
 import { PlayerPicker } from "./PlayerPicker";
-import { useGameContext } from "../context/gameContex";
+import { useGameContext } from "../context";
 
-export const Options = () => {
+interface Props {
+  fetchPokemons: () => void;
+}
+
+export const Options = ({ fetchPokemons }: Props) => {
   const { gameContext, setGameContext } = useGameContext();
 
   function setPlayers(qty: number) {
@@ -13,6 +17,11 @@ export const Options = () => {
 
   function setDifficulty(difficulty: Difficulty) {
     setGameContext({ ...gameContext, gameDifficulty: difficulty });
+  }
+
+  function startGame() {
+    setGameContext({ ...gameContext, isGameStarted: true });
+    fetchPokemons();
   }
 
   return (
@@ -48,7 +57,10 @@ export const Options = () => {
         </div>
 
         <div className="flex justify-center">
-          <button className="text-xl text-white w-full bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow">
+          <button
+            onClick={startGame}
+            className="text-xl text-white w-full bg-color-purple border border-color-cyan px-6 py-3 rounded-md shadow"
+          >
             Jugar
           </button>
         </div>
