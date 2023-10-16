@@ -1,13 +1,19 @@
+import { Difficulty } from "../customTypes";
+
 interface Props {
-  text: string;
-  image: string;
+  difficulty: Difficulty;
+  selectDifficulty: () => void;
 }
 
-export function DiffilcultyPicker({ text, image }: Props) {
+export function DiffilcultyPicker({ difficulty }: Props) {
   return (
     <div className="bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all">
-      <img src={image} className="aspect-square" alt={text} />
-      <p className="text-xl text-color-cyan">{text}</p>
+      <img
+        src={difficulty.icon}
+        className="aspect-square"
+        alt={difficulty.label}
+      />
+      <p className="text-xl text-color-cyan">{difficulty.label}</p>
     </div>
   );
 }

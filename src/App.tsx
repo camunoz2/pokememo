@@ -2,16 +2,15 @@ import { GameBoard } from "./components/GameBoard";
 import { Background } from "./components/Background";
 import { Header } from "./components/Header";
 import { Options } from "./components/Options";
-import { useState } from "react";
+import { useGameContext } from "./context/gameContex";
 
 const App = () => {
-  const [isGameOptionsVisible, setIsGameOptionsVisible] = useState(true);
-
+  const { isGameStarted } = useGameContext();
   return (
     <div className="overflow-hidden w-full h-full">
-      <Background />
       <Header />
-      {isGameOptionsVisible && <Options />}
+      <Background />
+      {!isGameStarted && <Options />}
       <div className="container mx-auto">
         <GameBoard>Test</GameBoard>
       </div>

@@ -1,11 +1,14 @@
-import { useContext } from "react";
-import { GameContext } from "../context/gameContex";
 import { DiffilcultyPicker } from "./DifficultyPicker";
 import { difficultyOptions, players } from "../defaultSettings";
 import PlayerPicker from "./PlayerPicker";
+import { useContext } from "react";
+import { GameContext } from "../context/gameContex";
+import { Difficulty } from "../customTypes";
 
 export const Options = () => {
-  const { gameDifficulty, numberOfPlayers } = useContext(GameContext);
+  const { gameContext, updateGameContext } = useContext(GameContext);
+
+  function handleDifficulty(difficulty: Difficulty) {}
 
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
@@ -14,7 +17,7 @@ export const Options = () => {
           Opciones
         </h2>
         <div className="flex flex-col gap-6">
-          <p className="text-white text-center">Cantidad de Jugadores</p>
+          <p className="text-white text-center">Cantidad de jugadores</p>
           <div className="grid grid-cols-4 flex-wrap gap-2">
             {players.map((player) => (
               <PlayerPicker player={player} />
@@ -27,8 +30,8 @@ export const Options = () => {
           <div className="grid grid-cols-3 gap-2">
             {difficultyOptions.map((difficulty) => (
               <DiffilcultyPicker
-                text={difficulty.label}
-                image={difficulty.icon}
+                difficulty={difficulty}
+                selectDifficulty={handleDifficulty}
               />
             ))}
           </div>

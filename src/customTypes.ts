@@ -4,6 +4,11 @@ export interface Player {
   score: number;
 }
 
+export interface Card {
+  name: string;
+  image: string;
+}
+
 export interface Difficulty {
   value: number;
   label: string;
@@ -11,6 +16,10 @@ export interface Difficulty {
 }
 
 export interface GameContextOptions {
-  gameDifficulty: Difficulty;
   numberOfPlayers: number;
+  gameDifficulty: Difficulty;
+  numberOfTurns: number;
+  isGameStarted: boolean;
+  isGameEnded: boolean;
+  foundPairs: Set<string>;
 }
