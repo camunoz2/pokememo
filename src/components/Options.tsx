@@ -1,11 +1,15 @@
+import type { Difficulty } from "../customTypes";
 import { DiffilcultyPicker } from "./DifficultyPicker";
 import { difficultyOptions, players } from "../defaultSettings";
-import PlayerPicker from "./PlayerPicker";
+import { PlayerPicker } from "./PlayerPicker";
 import { useGameContext } from "../context/gameContex";
-import type { Difficulty } from "../customTypes";
 
 export const Options = () => {
   const { gameContext, setGameContext } = useGameContext();
+
+  function setPlayers(qty: number) {
+    setGameContext({ ...gameContext, numberOfPlayers: qty });
+  }
 
   function setDifficulty(difficulty: Difficulty) {
     setGameContext({ ...gameContext, gameDifficulty: difficulty });
@@ -21,7 +25,11 @@ export const Options = () => {
           <p className="text-white text-center">Cantidad de jugadores</p>
           <div className="grid grid-cols-4 flex-wrap gap-2">
             {players.map((player) => (
-              <PlayerPicker player={player} />
+              <PlayerPicker
+                key={player.label}
+                player={player}
+                selectNumberOfPlayers={setPlayers}
+              />
             ))}
           </div>
         </div>
@@ -31,6 +39,7 @@ export const Options = () => {
           <div className="grid grid-cols-3 gap-2">
             {difficultyOptions.map((difficulty) => (
               <DiffilcultyPicker
+                key={difficulty.value}
                 difficulty={difficulty}
                 selectDifficulty={setDifficulty}
               />

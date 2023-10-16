@@ -12,7 +12,10 @@ const App = () => {
       <Background />
       {!gameContext.isGameStarted && <Options />}
       <div className="container mx-auto">
-        <GameBoard>{gameContext.gameDifficulty.label}</GameBoard>
+        <GameBoard>
+          Players: {gameContext.numberOfPlayers} Difficulty:{" "}
+          {gameContext.gameDifficulty.label}
+        </GameBoard>
       </div>
     </div>
   );

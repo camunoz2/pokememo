@@ -1,4 +1,4 @@
-import { Difficulty } from "../customTypes";
+import type { Difficulty } from "../customTypes";
 
 interface Props {
   difficulty: Difficulty;
