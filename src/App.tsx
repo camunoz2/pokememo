@@ -1,24 +1,19 @@
-import CardContainer from "./components/CardContainer";
+import { GameBoard } from "./components/GameBoard";
 import { Background } from "./components/Background";
 import { Header } from "./components/Header";
-import { OptionsSideBar } from "./components/OptionsSideBar";
+import { Options } from "./components/Options";
+import { useState } from "react";
 
 const App = () => {
+  const [isGameOptionsVisible, setIsGameOptionsVisible] = useState(true);
+
   return (
     <div className="overflow-hidden w-full h-full">
       <Background />
       <Header />
-
+      {isGameOptionsVisible && <Options />}
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          <div className="col-span-3 lg:col-span-1">
-            <OptionsSideBar />
-          </div>
-
-          <div className="col-span-3 lg:col-span-2 bg-color-darkblue rounded-md">
-            <CardContainer>Test</CardContainer>
-          </div>
-        </div>
+        <GameBoard>Test</GameBoard>
       </div>
     </div>
   );
