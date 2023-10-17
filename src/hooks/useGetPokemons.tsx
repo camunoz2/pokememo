@@ -1,20 +1,18 @@
 import { useCallback, useState } from "react";
-import { getPokemonData } from "../services/getPokemons";
+import { getRandomPokemons } from "../services/getPokemons";
 import { Pokemon } from "../customTypes";
-import { randomizePokemons } from "../services/utils";
 
 export function useGetPokemon() {
   const [pokemons, setPokemons] = useState<Pokemon[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPokemons = useCallback(() => {
+  const fetchPokemons = useCallback((pokemonLimit: number) => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const data = await getPokemonData();
-        const randomizedPokemons = randomizePokemons(data.results);
-        setPokemons(randomizedPokemons);
+        const data = await getRandomPokemons(pokemonLimit);
+        setPokemons(data);
         setError(null);
       } catch (error) {
         setError("Could not fetch data");

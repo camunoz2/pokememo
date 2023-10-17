@@ -7,7 +7,7 @@ export interface Player {
 export interface Pokemon {
   id: number;
   name: string;
-  sprite: {
+  sprites: {
     front_default: string;
   };
 }
@@ -21,6 +21,7 @@ export interface Difficulty {
   value: number;
   label: string;
   icon: string;
+  numberOfPairs: number;
 }
 
 export interface GameOptions {
