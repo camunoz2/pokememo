@@ -4,7 +4,8 @@ import { Header } from "./components/Header";
 import { Options } from "./components/Options";
 import { useGameContext } from "./context";
 import { useGetPokemon } from "./hooks/useGetPokemons";
-import { PokemonCard } from "./components/PokemonCard";
+import { PokemonCardFront } from "./components/PokemonCardFront";
+import { LoadingSpinner } from "./components/LoadingSpinner";
 
 const App = () => {
   const { gameContext } = useGameContext();
@@ -24,14 +25,15 @@ const App = () => {
         />
       )}
       <div className="container mx-auto">
-        <GameBoard>{gameContext.numberOfPlayers}</GameBoard>
-      </div>
-      <div className="flex flex-wrap">
-        {isLoading
-          ? "Cargando..."
-          : pokemons?.map((poke, index) => (
-              <PokemonCard key={index} pokemon={poke} />
-            ))}
+        <GameBoard>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            pokemons?.map((poke, index) => (
+              <PokemonCardFront key={index} pokemon={poke} />
+            ))
+          )}
+        </GameBoard>
       </div>
     </div>
   );
