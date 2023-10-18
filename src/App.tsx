@@ -6,6 +6,7 @@ import { useGameContext } from "./context";
 import { useGetPokemon } from "./hooks/useGetPokemons";
 import { PokemonCardFront } from "./components/PokemonCardFront";
 import { LoadingSpinner } from "./components/LoadingSpinner";
+import { PokemonCardBack } from "./components/PokemonCardBack";
 
 const App = () => {
   const { gameContext } = useGameContext();
@@ -30,7 +31,10 @@ const App = () => {
             <LoadingSpinner />
           ) : (
             pokemons?.map((poke, index) => (
-              <PokemonCardFront key={index} pokemon={poke} />
+              <>
+                <PokemonCardBack />
+                <PokemonCardFront key={index} pokemon={poke} />
+              </>
             ))
           )}
         </GameBoard>
