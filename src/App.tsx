@@ -7,12 +7,11 @@ import { useGetPokemon } from "./hooks/useGetPokemons";
 import { PokemonCardFront } from "./components/PokemonCardFront";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { PokemonCardBack } from "./components/PokemonCardBack";
+import PokemonCard from "./components/PokemonCard";
 
 const App = () => {
   const { gameContext } = useGameContext();
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon();
-
-  console.log(pokemons);
 
   return (
     <div className="overflow-hidden w-full h-full">
@@ -31,10 +30,7 @@ const App = () => {
             <LoadingSpinner />
           ) : (
             pokemons?.map((poke, index) => (
-              <>
-                <PokemonCardBack />
-                <PokemonCardFront key={index} pokemon={poke} />
-              </>
+              <PokemonCard key={index} pokemon={poke} />
             ))
           )}
         </GameBoard>
