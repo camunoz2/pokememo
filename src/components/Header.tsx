@@ -1,4 +1,4 @@
-export const Header = () => {
+export const Header = (): JSX.Element => {
   return (
     <div className="bg-color-darkblue py-2 drop-shadow-md">
       <div className="container mx-auto flex justify-between">
@@ -11,5 +11,5 @@ export const Header = () => {
         </a>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,4 +1,4 @@
-export function LoadingSpinner() {
+export function LoadingSpinner(): JSX.Element {
   return (
     <div
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -22,5 +22,5 @@ export function LoadingSpinner() {
       </svg>
       <span className="sr-only">Loading...</span>
     </div>
-  );
+  )
 }

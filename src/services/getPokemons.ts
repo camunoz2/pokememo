@@ -1,4 +1,4 @@
-import { Pokemon } from "../customTypes";
+import { type Pokemon } from "../customTypes";
 import { getRandomIds } from "./utils";
 
 export async function getRandomPokemons(arrLength: number): Promise<Pokemon[]> {

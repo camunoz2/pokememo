@@ -1,27 +1,26 @@
-import { GameBoard } from "./components/GameBoard";
-import { Background } from "./components/Background";
-import { Header } from "./components/Header";
-import { Options } from "./components/Options";
-import { useGameContext } from "./context";
-import { useGetPokemon } from "./hooks/useGetPokemons";
-import { PokemonCardFront } from "./components/PokemonCardFront";
-import { LoadingSpinner } from "./components/LoadingSpinner";
-import { PokemonCardBack } from "./components/PokemonCardBack";
-import PokemonCard from "./components/PokemonCard";
+import { GameBoard } from './components/GameBoard'
+import { Background } from './components/Background'
+import { Header } from './components/Header'
+import { Options } from './components/Options'
+import { useGameContext } from './context'
+import { useGetPokemon } from './hooks/useGetPokemons'
+import { LoadingSpinner } from './components/LoadingSpinner'
+import PokemonCard from './components/PokemonCard'
 
-const App = () => {
-  const { gameContext } = useGameContext();
-  const { fetchPokemons, pokemons, isLoading } = useGetPokemon();
+function App(): JSX.Element {
+  const { gameContext } = useGameContext()
+  const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
 
   return (
     <div className="overflow-hidden w-full h-full">
       <Header />
+      https://github.com/jsx-eslint/eslint-plugin-react/tree/master/docs/rules/react-in-jsx-scope.md
       <Background />
       {!gameContext.isGameStarted && (
         <Options
-          fetchPokemons={() =>
-            fetchPokemons(gameContext.gameDifficulty.numberOfPairs)
-          }
+          fetchPokemons={() => {
+            void fetchPokemons(gameContext.gameDifficulty.numberOfPairs)
+          }}
         />
       )}
       <div className="container mx-auto">
@@ -36,7 +35,7 @@ const App = () => {
         </GameBoard>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

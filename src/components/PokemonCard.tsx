@@ -1,14 +1,14 @@
-import { Pokemon } from "../customTypes";
-import { PokemonCardBack } from "./PokemonCardBack";
-import { PokemonCardFront } from "./PokemonCardFront";
+import { type Pokemon } from '../customTypes'
+import { PokemonCardBack } from './PokemonCardBack'
+import { PokemonCardFront } from './PokemonCardFront'
 
 interface Props {
-  pokemon: Pokemon;
+  pokemon: Pokemon
 }
 
-export default function PokemonCard({ pokemon }: Props) {
-  function selectCard() {
-    console.log(pokemon);
+export default function PokemonCard({ pokemon }: Props): JSX.Element {
+  function selectCard(): void {
+    console.log(pokemon)
   }
 
   return (
@@ -18,5 +18,5 @@ export default function PokemonCard({ pokemon }: Props) {
       </div>
       <PokemonCardFront pokemon={pokemon} />
     </div>
-  );
+  )
 }

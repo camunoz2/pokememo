@@ -1,4 +1,4 @@
-import { Difficulty, Player } from "./customTypes";
+import { type Difficulty, type Player } from "./customTypes";
 
 export const MAX_POKEMON_ID = 1000;
 

@@ -1,27 +1,27 @@
-import type { Difficulty } from "../customTypes";
-import { DiffilcultyPicker } from "./DifficultyPicker";
-import { difficultyOptions, players } from "../defaultSettings";
-import { PlayerPicker } from "./PlayerPicker";
-import { useGameContext } from "../context";
+import type { Difficulty } from '../customTypes'
+import { DiffilcultyPicker } from './DifficultyPicker'
+import { difficultyOptions, players } from '../defaultSettings'
+import { PlayerPicker } from './PlayerPicker'
+import { useGameContext } from '../context'
 
 interface Props {
-  fetchPokemons: () => void;
+  fetchPokemons: () => void
 }
 
-export const Options = ({ fetchPokemons }: Props) => {
-  const { gameContext, setGameContext } = useGameContext();
+export const Options = ({ fetchPokemons }: Props): JSX.Element => {
+  const { gameContext, setGameContext } = useGameContext()
 
-  function setPlayers(qty: number) {
-    setGameContext({ ...gameContext, numberOfPlayers: qty });
+  function setPlayers(qty: number): void {
+    setGameContext({ ...gameContext, numberOfPlayers: qty })
   }
 
-  function setDifficulty(difficulty: Difficulty) {
-    setGameContext({ ...gameContext, gameDifficulty: difficulty });
+  function setDifficulty(difficulty: Difficulty): void {
+    setGameContext({ ...gameContext, gameDifficulty: difficulty })
   }
 
-  function startGame() {
-    setGameContext({ ...gameContext, isGameStarted: true });
-    fetchPokemons();
+  function startGame(): void {
+    setGameContext({ ...gameContext, isGameStarted: true })
+    fetchPokemons()
   }
 
   return (
@@ -66,5 +66,5 @@ export const Options = ({ fetchPokemons }: Props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

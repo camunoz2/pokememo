@@ -1,18 +1,23 @@
-import { useGameContext } from "../context";
-import type { Difficulty } from "../customTypes";
+import { useGameContext } from '../context'
+import type { Difficulty } from '../customTypes'
 
 interface Props {
-  difficulty: Difficulty;
-  selectDifficulty: (difficulty: Difficulty) => void;
+  difficulty: Difficulty
+  selectDifficulty: (difficulty: Difficulty) => void
 }
 
-export function DiffilcultyPicker({ difficulty, selectDifficulty }: Props) {
-  const { gameContext } = useGameContext();
+export function DiffilcultyPicker({
+  difficulty,
+  selectDifficulty,
+}: Props): JSX.Element {
+  const { gameContext } = useGameContext()
   return (
     <button
-      onClick={() => selectDifficulty(difficulty)}
+      onClick={() => {
+        selectDifficulty(difficulty)
+      }}
       className={`${
-        gameContext.gameDifficulty === difficulty && "bg-teal-500"
+        gameContext.gameDifficulty === difficulty && 'bg-teal-500'
       } bg-color-lightblue flex flex-col p-1 rounded-md items-center cursor-pointer transition-all`}
     >
       <img
@@ -22,5 +27,5 @@ export function DiffilcultyPicker({ difficulty, selectDifficulty }: Props) {
       />
       <p className="text-xl text-color-cyan">{difficulty.label}</p>
     </button>
-  );
+  )
 }

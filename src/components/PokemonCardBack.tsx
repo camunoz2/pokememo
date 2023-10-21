@@ -1,10 +1,8 @@
-import { Pokemon } from "../customTypes";
-
 interface Props {
-  selectCard: () => void;
+  selectCard: () => void
 }
 
-export function PokemonCardBack({ selectCard }: Props) {
+export function PokemonCardBack({ selectCard }: Props): JSX.Element {
   return (
     <div
       onClick={selectCard}
@@ -12,5 +10,5 @@ export function PokemonCardBack({ selectCard }: Props) {
     >
       <p>Text</p>
     </div>
-  );
+  )
 }
