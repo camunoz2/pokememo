@@ -12,6 +12,7 @@ export const Options = ({ fetchPokemons }: Props): JSX.Element => {
   const { gameContext, setGameContext } = useGameContext()
 
   function setPlayers(qty: number): void {
+    // TODO: Set the players
     setGameContext({ ...gameContext, numberOfPlayers: qty })
   }
 

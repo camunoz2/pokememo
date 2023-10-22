@@ -14,7 +14,6 @@ function App(): JSX.Element {
   return (
     <div className="overflow-hidden w-full h-full">
       <Header />
-      https://github.com/jsx-eslint/eslint-plugin-react/tree/master/docs/rules/react-in-jsx-scope.md
       <Background />
       {!gameContext.isGameStarted && (
         <Options
@@ -25,13 +24,7 @@ function App(): JSX.Element {
       )}
       <div className="container mx-auto">
         <GameBoard>
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            pokemons?.map((poke, index) => (
-              <PokemonCard key={index} pokemon={poke} />
-            ))
-          )}
+          {isLoading ? <LoadingSpinner /> : pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} />)}
         </GameBoard>
       </div>
     </div>
