@@ -1,19 +1,19 @@
 import type React from 'react'
 import { createContext, useContext, useState } from 'react'
 import { defaultGameOptions, initialGameState } from '../defaultSettings'
-import { type GameState, type GameContextOptions } from '../customTypes'
+import { type GameContextOptions } from '../customTypes'
 
 const GameContext = createContext<GameContextOptions | null>(null)
 
 function GameContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [gameOptionsContext, setGameOptionsContext] = useState(defaultGameOptions)
-  const [gameState, setGameState] = useState<GameState>(initialGameState)
+  const [gameContext, setGameContext] = useState(defaultGameOptions)
+  const [gameState, setGameState] = useState(initialGameState)
 
   return (
     <GameContext.Provider
       value={{
-        gameContext: gameOptionsContext,
-        setGameContext: setGameOptionsContext,
+        gameContext,
+        setGameContext,
         gameState,
         setGameState,
       }}

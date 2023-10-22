@@ -36,11 +36,10 @@ export interface GameOptions {
   numberOfTurns: number
   isGameStarted: boolean
   isGameEnded: boolean
-  currentPlayerTurn: Player
 }
 
 export interface GameState {
-  currentTurn: Player
+  currentPlayer: Player
   isFirstCardFinishedAnimation: boolean
   isSecondCardFinishedAnimation: boolean
   isPairFound: boolean

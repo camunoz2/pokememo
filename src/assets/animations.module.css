@@ -1,0 +1,32 @@
+@keyframes flipHorizontalFwd {
+  0% {
+    transform: translateZ(0) rotateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(160px) rotateX(-180deg);
+    opacity: 0;
+  }
+  
+}
+
+.flipHorizontalFwd {
+  animation: flipHorizontalFwd 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+@keyframes flipHorizontalBwd {
+  0% {
+    transform: translateZ(0) rotateX(-180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(-160px) rotateX(0);
+    opacity: 1;
+  }
+
+}
+
+.flipHorizontalBwd {
+  animation: flipHorizontalBwd 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
