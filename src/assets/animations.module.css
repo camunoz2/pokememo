@@ -12,6 +12,7 @@
 
 .flipHorizontalFwd {
   animation: flipHorizontalFwd 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  transition: all;
 }
 
 @keyframes flipHorizontalBwd {
@@ -28,5 +29,6 @@
 
 .flipHorizontalBwd {
   animation: flipHorizontalBwd 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  transition: all;
 }
 

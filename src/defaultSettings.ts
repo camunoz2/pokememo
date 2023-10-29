@@ -23,47 +23,47 @@ export const difficultyOptions: Difficulty[] = [
   },
 ]
 
-export const players: Player[] = [
+export const defaultPlayersArray: Player[] = [
   {
     label: 1,
     score: 0,
     name: 'Jugador 1',
-    pairs: [],
+    matchedCards: new Set(),
+    selectedCards: [],
   },
   {
     label: 2,
     score: 0,
     name: 'Jugador 2',
-    pairs: [],
+    matchedCards: new Set(),
+    selectedCards: [],
   },
   {
     label: 3,
     score: 0,
     name: 'Jugador 3',
-    pairs: [],
+    matchedCards: new Set(),
+    selectedCards: [],
   },
   {
     label: 4,
     score: 0,
     name: 'Jugador 4',
-    pairs: [],
+    matchedCards: new Set(),
+    selectedCards: [],
   },
 ]
 
 export const defaultGameOptions: GameOptions = {
   numberOfPlayers: 1,
   gameDifficulty: difficultyOptions[0],
-  numberOfTurns: 0,
-  isGameEnded: false,
   isGameStarted: false,
-  currentPlayerTurn: players[0],
+  players: [],
 }
 
 export const initialGameState: GameState = {
-  currentTurn: players[0],
-  isFirstCardFinishedAnimation: false,
-  isFirstCardSelected: false,
-  isPairFound: false,
-  isSecondCardFinishedAnimation: false,
-  isSecondCardSelected: false,
+  currentPlayer: defaultPlayersArray[0],
+  allMatchedCards: new Set(),
+  isUIInteractable: true,
+  turn: 0,
 }

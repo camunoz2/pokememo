@@ -1,13 +1,9 @@
-interface Pair {
-  firstCard: Pokemon
-  secondCard: Pokemon
-}
-
 export interface Player {
   label: number
   name: string
   score: number
-  pairs: Pair[]
+  selectedCards: PokemonExtractedData[]
+  matchedCards: Set<PokemonExtractedData>
 }
 
 export interface Pokemon {
@@ -16,6 +12,13 @@ export interface Pokemon {
   sprites: {
     front_default: string
   }
+}
+
+export interface PokemonExtractedData {
+  UUID: number
+  id: number
+  name: string
+  sprite: string
 }
 
 export interface Card {
@@ -33,18 +36,15 @@ export interface Difficulty {
 export interface GameOptions {
   numberOfPlayers: number
   gameDifficulty: Difficulty
-  numberOfTurns: number
   isGameStarted: boolean
-  isGameEnded: boolean
+  players: Player[]
 }
 
 export interface GameState {
+  turn: number
   currentPlayer: Player
-  isFirstCardFinishedAnimation: boolean
-  isSecondCardFinishedAnimation: boolean
-  isPairFound: boolean
-  isFirstCardSelected: boolean
-  isSecondCardSelected: boolean
+  allMatchedCards: Set<PokemonExtractedData>
+  isUIInteractable: boolean
 }
 
 export interface GameContextOptions {
