@@ -7,19 +7,17 @@ import { useGetPokemon } from './hooks/useGetPokemons'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import PokemonCard from './components/PokemonCard'
 import { useEffect } from 'react'
-import { type PokemonExtractedData } from './customTypes'
 
 function App(): JSX.Element {
   const { gameContext, gameState, setGameState } = useGameContext()
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
+  const { allMatchedCards, currentPlayer, isUIInteractable, turn } = gameState
+  const { players } = gameContext
 
   function nextTurn(): void {
-    const currentTurn = gameState.turn
-    const numbOfPlayers = gameContext.players.length
-
     // nextTurn oscillates between 0 and numbOfPlayers, by 1 step increment
-    const nextTurn = (currentTurn + 1) % numbOfPlayers
-    setGameState({ ...gameState, currentPlayer: gameContext.players[nextTurn], turn: nextTurn })
+    const nextTurn = (turn + 1) % players.length
+    setGameState({ ...gameState, currentPlayer: players[nextTurn], turn: nextTurn })
   }
 
   function turnReset(): number {
@@ -35,19 +33,19 @@ function App(): JSX.Element {
 
   useEffect(() => {
     // copy the set of matched cards for correct Updating of values
-    const newMatchedCard = new Set<PokemonExtractedData>(gameState.allMatchedCards)
-    const playerMatches = new Set<PokemonExtractedData>(gameState.currentPlayer.matchedCards)
 
-    const isSecondTurn = gameState.currentPlayer.selectedCards.length === 2
+    const isSecondTurn = currentPlayer.selectedCards.length === 2
     if (isSecondTurn) {
-      if (gameState.currentPlayer.selectedCards[0].name === gameState.currentPlayer.selectedCards[1].name) {
+      const isPairFound = currentPlayer.selectedCards[0].name === currentPlayer.selectedCards[1].name
+      if (isPairFound) {
         // if there is a match, add to the playersMatches and the globalMatches for updating the card animation
-        newMatchedCard.add(gameState.currentPlayer.selectedCards[0])
-        playerMatches.add(gameState.currentPlayer.selectedCards[0])
+
+        const playerMatches = new Set(currentPlayer.matchedCards)
+
         setGameState((prevState) => ({
           ...prevState,
           isUIInteractable: false, // cannot select any card
-          allMatchedCards: newMatchedCard,
+          allMatchedCards,
           currentPlayer: { ...prevState.currentPlayer, matchedCards: playerMatches },
         }))
         turnReset()
@@ -61,7 +59,7 @@ function App(): JSX.Element {
         clearInterval(turnReset())
       }
     }
-  }, [gameState.currentPlayer.selectedCards])
+  }, [currentPlayer.selectedCards])
 
   return (
     <div className="overflow-hidden w-full h-full">
@@ -81,21 +79,16 @@ function App(): JSX.Element {
         </div>
         <div>
           <h1 className="underline text-lg font-bold">Game State</h1>
-          <ul>currentPlayer.selectedCards: {JSON.stringify(gameState.currentPlayer.selectedCards)}</ul>
-          <p>turn: {gameState.turn}</p>
-          <p>currentPlayer: {gameState.currentPlayer.name}</p>
-          <p>isUIInteractable: {gameState.isUIInteractable.toString()}</p>
+          <ul>currentPlayer.selectedCards: {JSON.stringify(currentPlayer.selectedCards)}</ul>
+          <p>turn: {turn}</p>
+          <p>currentPlayer: {currentPlayer.name}</p>
+          <p>isUIInteractable: {isUIInteractable.toString()}</p>
           <h2>Matched cards!</h2>
           <ul>
-            {Array.from(gameState.allMatchedCards).map((match, index) => (
+            {Array.from(allMatchedCards).map((match, index) => (
               <li key={index}>Matched cards: {match.name}</li>
             ))}
           </ul>
-          {/* <ul>
-            {Array.from(gameState.currentPlayer.matchedCards).map((match) => (
-              <li>{match.name}</li>
-            ))}
-          </ul> */}
         </div>
       </div>
       <Background />
