@@ -11,55 +11,48 @@ import { useEffect } from 'react'
 function App(): JSX.Element {
   const { gameContext, gameState, setGameState } = useGameContext()
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
-  const { allMatchedCards, currentPlayer, isUIInteractable, turn } = gameState
-  const { players } = gameContext
 
   function nextTurn(): void {
     // nextTurn oscillates between 0 and numbOfPlayers, by 1 step increment
-    const nextTurn = (turn + 1) % players.length
-    setGameState({ ...gameState, currentPlayer: players[nextTurn], turn: nextTurn })
+    const nextTurn = (gameState.turn + 1) % gameContext.players.length
+    setGameState({ ...gameState, currentPlayer: gameContext.players[nextTurn], turn: nextTurn })
   }
 
-  function turnReset(): number {
-    return setTimeout(() => {
-      nextTurn()
-      setGameState((prevState) => ({
-        ...prevState,
-        currentPlayer: { ...prevState.currentPlayer, selectedCards: [] },
-        isUIInteractable: true, // after animation donde, can select new cards
-      }))
-    }, 2000)
+  function delay(ms: number): number {
+    return setTimeout(() => {}, ms)
   }
+
+  function addCardToPlayerMatches(cardName: string): void {
+    //
+  }
+
+  function addCardToGlobalMatches(cardName: string): void {}
+  function emptyPlayerCurrentSelectedCards(): void {}
 
   useEffect(() => {
     // copy the set of matched cards for correct Updating of values
 
-    const isSecondTurn = currentPlayer.selectedCards.length === 2
+    const isSecondTurn = gameState.currentPlayer.selectedCards.length === 2
     if (isSecondTurn) {
-      const isPairFound = currentPlayer.selectedCards[0].name === currentPlayer.selectedCards[1].name
+      const isPairFound = gameState.currentPlayer.selectedCards[0] === gameState.currentPlayer.selectedCards[1]
       if (isPairFound) {
-        // if there is a match, add to the playersMatches and the globalMatches for updating the card animation
-
-        const playerMatches = new Set(currentPlayer.matchedCards)
-
-        setGameState((prevState) => ({
-          ...prevState,
-          isUIInteractable: false, // cannot select any card
-          allMatchedCards,
-          currentPlayer: { ...prevState.currentPlayer, matchedCards: playerMatches },
-        }))
-        turnReset()
-        // clear selectedCards after a delay
-      } else {
-        setGameState({ ...gameState, isUIInteractable: false })
-        turnReset()
+        addCardToPlayerMatches(gameState.currentPlayer.selectedCards[0])
+        addCardToGlobalMatches(gameState.currentPlayer.selectedCards[0])
+        delay(2000)
+        emptyPlayerCurrentSelectedCards()
+        nextTurn()
+      }
+      if (!isPairFound) {
+        emptyPlayerCurrentSelectedCards()
+        delay(2000)
+        nextTurn()
       }
 
       return () => {
-        clearInterval(turnReset())
+        clearInterval(delay(0))
       }
     }
-  }, [currentPlayer.selectedCards])
+  }, [gameState.currentPlayer.selectedCards])
 
   return (
     <div className="overflow-hidden w-full h-full">
@@ -79,14 +72,14 @@ function App(): JSX.Element {
         </div>
         <div>
           <h1 className="underline text-lg font-bold">Game State</h1>
-          <ul>currentPlayer.selectedCards: {JSON.stringify(currentPlayer.selectedCards)}</ul>
-          <p>turn: {turn}</p>
-          <p>currentPlayer: {currentPlayer.name}</p>
-          <p>isUIInteractable: {isUIInteractable.toString()}</p>
+          <ul>gameState.currentPlayer.selectedCards: {JSON.stringify(gameState.currentPlayer.selectedCards)}</ul>
+          <p>turn: {gameState.turn}</p>
+          <p>gameState.currentPlayer: {gameState.currentPlayer.name}</p>
+          <p>isUIInteractable: {gameState.isUIInteractable.toString()}</p>
           <h2>Matched cards!</h2>
           <ul>
-            {Array.from(allMatchedCards).map((match, index) => (
-              <li key={index}>Matched cards: {match.name}</li>
+            {Array.from(gameState.allMatchedCards).map((match, index) => (
+              <li key={index}>Matched cards: {match}</li>
             ))}
           </ul>
         </div>

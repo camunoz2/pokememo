@@ -2,8 +2,8 @@ export interface Player {
   label: number
   name: string
   score: number
-  selectedCards: PokemonExtractedData[]
-  matchedCards: Set<PokemonExtractedData>
+  selectedCards: string[]
+  matchedCards: string[]
 }
 
 export interface Pokemon {
@@ -43,7 +43,7 @@ export interface GameOptions {
 export interface GameState {
   turn: number
   currentPlayer: Player
-  allMatchedCards: Set<PokemonExtractedData>
+  allMatchedCards: string[]
   isUIInteractable: boolean
 }
 

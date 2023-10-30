@@ -28,28 +28,28 @@ export const defaultPlayersArray: Player[] = [
     label: 1,
     score: 0,
     name: 'Jugador 1',
-    matchedCards: new Set(),
+    matchedCards: [],
     selectedCards: [],
   },
   {
     label: 2,
     score: 0,
     name: 'Jugador 2',
-    matchedCards: new Set(),
+    matchedCards: [],
     selectedCards: [],
   },
   {
     label: 3,
     score: 0,
     name: 'Jugador 3',
-    matchedCards: new Set(),
+    matchedCards: [],
     selectedCards: [],
   },
   {
     label: 4,
     score: 0,
     name: 'Jugador 4',
-    matchedCards: new Set(),
+    matchedCards: [],
     selectedCards: [],
   },
 ]
@@ -63,7 +63,7 @@ export const defaultGameOptions: GameOptions = {
 
 export const initialGameState: GameState = {
   currentPlayer: defaultPlayersArray[0],
-  allMatchedCards: new Set(),
+  allMatchedCards: [],
   isUIInteractable: true,
   turn: 0,
 }

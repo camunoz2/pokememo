@@ -14,21 +14,23 @@ export default function PokemonCard({ pokemon }: Props): JSX.Element {
   const [isFlipped, setIsFlipped] = useState(false)
 
   useEffect(() => {
-    setIsFlipped(gameState.allMatchedCards.has(pokemon) || gameState.currentPlayer.selectedCards.includes(pokemon))
+    setIsFlipped(
+      gameState.allMatchedCards.includes(pokemon.name) || gameState.currentPlayer.selectedCards.includes(pokemon.name),
+    )
   }, [gameState.currentPlayer.selectedCards])
 
   function selectCard(): void {
     if (!gameState.isUIInteractable) return
     // prevent doing calculations if clicked on the same card
     const result = gameState.currentPlayer.selectedCards.find((card) => {
-      return card.UUID === pokemon.UUID
+      return card === pokemon.name
     })
     if (result !== undefined) return
 
     // create a newPlayer state with the newcard added to selectedCards
     const newPlayerState: Player = {
       ...gameState.currentPlayer,
-      selectedCards: [...gameState.currentPlayer.selectedCards, pokemon],
+      selectedCards: [...gameState.currentPlayer.selectedCards, pokemon.name],
     }
 
     setGameState({ ...gameState, currentPlayer: newPlayerState })
