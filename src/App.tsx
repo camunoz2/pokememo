@@ -7,6 +7,7 @@ import { useGetPokemon } from './hooks/useGetPokemons'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import PokemonCard from './components/PokemonCard'
 import { useEffect } from 'react'
+import { type GameState, type Player } from './customTypes'
 
 function App(): JSX.Element {
   const { gameContext, gameState, setGameState } = useGameContext()
@@ -22,12 +23,26 @@ function App(): JSX.Element {
     return setTimeout(() => {}, ms)
   }
 
-  function addCardToPlayerMatches(cardName: string): void {
-    //
+  function addCardToMatches(cardName: string): void {
+    const newPlayerMatchedCards: Player = {
+      ...gameState.currentPlayer,
+      matchedCards: [...gameState.currentPlayer.matchedCards, cardName],
+    }
+    const newGameState: GameState = {
+      ...gameState,
+      allMatchedCards: [...gameState.allMatchedCards, cardName],
+      currentPlayer: newPlayerMatchedCards,
+    }
+    setGameState(newGameState)
   }
 
-  function addCardToGlobalMatches(cardName: string): void {}
-  function emptyPlayerCurrentSelectedCards(): void {}
+  function emptyPlayerCurrentSelectedCards(): void {
+    const emptyCurrentPlayerCards: Player = {
+      ...gameState.currentPlayer,
+      selectedCards: [],
+    }
+    setGameState({ ...gameState, currentPlayer: emptyCurrentPlayerCards })
+  }
 
   useEffect(() => {
     // copy the set of matched cards for correct Updating of values
@@ -36,8 +51,7 @@ function App(): JSX.Element {
     if (isSecondTurn) {
       const isPairFound = gameState.currentPlayer.selectedCards[0] === gameState.currentPlayer.selectedCards[1]
       if (isPairFound) {
-        addCardToPlayerMatches(gameState.currentPlayer.selectedCards[0])
-        addCardToGlobalMatches(gameState.currentPlayer.selectedCards[0])
+        addCardToMatches(gameState.currentPlayer.selectedCards[0])
         delay(2000)
         emptyPlayerCurrentSelectedCards()
         nextTurn()
