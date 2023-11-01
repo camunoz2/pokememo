@@ -3,34 +3,37 @@ import { PokemonCardBack } from './PokemonCardBack'
 import { PokemonCardFront } from './PokemonCardFront'
 import styles from '../assets/animations.module.css'
 import { useGameContext } from '../context'
-import { useEffect, useState } from 'react'
 
 interface Props {
   pokemon: PokemonExtractedData
+  isFlipped: boolean
 }
 
-export default function PokemonCard({ pokemon }: Props): JSX.Element {
+export default function PokemonCard({ pokemon, isFlipped }: Props): JSX.Element {
   const { gameState, setGameState } = useGameContext()
-  const [isFlipped, setIsFlipped] = useState(false)
-
-  useEffect(() => {
-    setIsFlipped(
-      gameState.allMatchedCards.includes(pokemon.name) || gameState.currentPlayer.selectedCards.includes(pokemon.name),
-    )
-  }, [gameState.currentPlayer.selectedCards])
 
   function selectCard(): void {
     if (!gameState.isUIInteractable) return
-    // prevent doing calculations if clicked on the same card
-    const result = gameState.currentPlayer.selectedCards.find((card) => {
-      return card === pokemon.name
-    })
-    if (result !== undefined) return
+
+    let newPlayerState: Player
 
     // create a newPlayer state with the newcard added to selectedCards
-    const newPlayerState: Player = {
-      ...gameState.currentPlayer,
-      selectedCards: [...gameState.currentPlayer.selectedCards, pokemon.name],
+    if (gameState.currentPlayer.selectedCards.choiceOne === null) {
+      newPlayerState = {
+        ...gameState.currentPlayer,
+        selectedCards: {
+          choiceOne: pokemon,
+          choiceTwo: null,
+        },
+      }
+    } else {
+      newPlayerState = {
+        ...gameState.currentPlayer,
+        selectedCards: {
+          ...gameState.currentPlayer.selectedCards,
+          choiceTwo: pokemon,
+        },
+      }
     }
 
     setGameState({ ...gameState, currentPlayer: newPlayerState })

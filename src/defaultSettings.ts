@@ -29,28 +29,40 @@ export const defaultPlayersArray: Player[] = [
     score: 0,
     name: 'Jugador 1',
     matchedCards: [],
-    selectedCards: [],
+    selectedCards: {
+      choiceOne: null,
+      choiceTwo: null,
+    },
   },
   {
     label: 2,
     score: 0,
     name: 'Jugador 2',
     matchedCards: [],
-    selectedCards: [],
+    selectedCards: {
+      choiceOne: null,
+      choiceTwo: null,
+    },
   },
   {
     label: 3,
     score: 0,
     name: 'Jugador 3',
     matchedCards: [],
-    selectedCards: [],
+    selectedCards: {
+      choiceOne: null,
+      choiceTwo: null,
+    },
   },
   {
     label: 4,
     score: 0,
     name: 'Jugador 4',
     matchedCards: [],
-    selectedCards: [],
+    selectedCards: {
+      choiceOne: null,
+      choiceTwo: null,
+    },
   },
 ]
 

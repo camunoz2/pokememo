@@ -7,66 +7,52 @@ import { useGetPokemon } from './hooks/useGetPokemons'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import PokemonCard from './components/PokemonCard'
 import { useEffect } from 'react'
-import { type GameState, type Player } from './customTypes'
+import { type PokemonExtractedData, type GameState, type Player } from './customTypes'
 
 function App(): JSX.Element {
   const { gameContext, gameState, setGameState } = useGameContext()
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
+  const { choiceOne, choiceTwo } = gameState.currentPlayer.selectedCards
 
-  function nextTurn(): void {
-    // nextTurn oscillates between 0 and numbOfPlayers, by 1 step increment
-    const nextTurn = (gameState.turn + 1) % gameContext.players.length
-    setGameState({ ...gameState, currentPlayer: gameContext.players[nextTurn], turn: nextTurn })
-  }
-
-  function delay(ms: number): number {
-    return setTimeout(() => {}, ms)
-  }
-
-  function addCardToMatches(cardName: string): void {
+  function addCardToMatches(card: PokemonExtractedData): void {
     const newPlayerMatchedCards: Player = {
       ...gameState.currentPlayer,
-      matchedCards: [...gameState.currentPlayer.matchedCards, cardName],
+      matchedCards: [...gameState.currentPlayer.matchedCards, card],
     }
     const newGameState: GameState = {
       ...gameState,
-      allMatchedCards: [...gameState.allMatchedCards, cardName],
+      allMatchedCards: [...gameState.allMatchedCards, card],
       currentPlayer: newPlayerMatchedCards,
     }
-    setGameState(newGameState)
   }
 
-  function emptyPlayerCurrentSelectedCards(): void {
-    const emptyCurrentPlayerCards: Player = {
-      ...gameState.currentPlayer,
-      selectedCards: [],
-    }
-    setGameState({ ...gameState, currentPlayer: emptyCurrentPlayerCards })
+  function isCardFlipped(pokemon: PokemonExtractedData): boolean {
+    const isChoiceOne = choiceOne?.UUID === pokemon.UUID
+    const isChoiceTwo = choiceTwo?.UUID === pokemon.UUID
+    return isChoiceOne || isChoiceTwo
   }
 
   useEffect(() => {
-    // copy the set of matched cards for correct Updating of values
-
-    const isSecondTurn = gameState.currentPlayer.selectedCards.length === 2
-    if (isSecondTurn) {
-      const isPairFound = gameState.currentPlayer.selectedCards[0] === gameState.currentPlayer.selectedCards[1]
-      if (isPairFound) {
-        addCardToMatches(gameState.currentPlayer.selectedCards[0])
-        delay(2000)
-        emptyPlayerCurrentSelectedCards()
-        nextTurn()
+    if (choiceOne !== null && choiceTwo !== null) {
+      // Remove cards, change turn, change currPlayer
+      const playerIndex = gameState.turn % gameContext.numberOfPlayers
+      const nextPlayerInArray = gameContext.players[playerIndex]
+      console.log(nextPlayerInArray)
+      const emptyCurrentPlayerCards: Player = {
+        ...gameState.currentPlayer,
+        selectedCards: {
+          choiceOne: null,
+          choiceTwo: null,
+        },
       }
-      if (!isPairFound) {
-        emptyPlayerCurrentSelectedCards()
-        delay(2000)
-        nextTurn()
+      const newGameState: GameState = {
+        ...gameState,
+        turn: gameState.turn + 1,
+        currentPlayer: emptyCurrentPlayerCards,
       }
-
-      return () => {
-        clearInterval(delay(0))
-      }
+      setGameState(newGameState)
     }
-  }, [gameState.currentPlayer.selectedCards])
+  }, [choiceOne, choiceTwo])
 
   return (
     <div className="overflow-hidden w-full h-full">
@@ -93,7 +79,7 @@ function App(): JSX.Element {
           <h2>Matched cards!</h2>
           <ul>
             {Array.from(gameState.allMatchedCards).map((match, index) => (
-              <li key={index}>Matched cards: {match}</li>
+              <li key={index}>Matched cards: {match.name}</li>
             ))}
           </ul>
         </div>
@@ -108,7 +94,11 @@ function App(): JSX.Element {
       )}
       <div className="container mx-auto">
         <GameBoard>
-          {isLoading ? <LoadingSpinner /> : pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} />)}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
+          )}
         </GameBoard>
       </div>
     </div>
