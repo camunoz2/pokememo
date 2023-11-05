@@ -5,8 +5,16 @@ import { useGameContext } from '../context'
 import { assertIsDefined } from '../services/utils'
 
 export function useStateManager(cardChoices: CardChoice): void {
-  const { setGameState, setCardChoices, gameState, gameContext, setPlayersState, setAllMatchedCards, allMatchedCards } =
-    useGameContext()
+  const {
+    setGameState,
+    setCardChoices,
+    gameState,
+    gameContext,
+    setGameContext,
+    setPlayersState,
+    setAllMatchedCards,
+    allMatchedCards,
+  } = useGameContext()
 
   useEffect(() => {
     if (allMatchedCards.length >= gameContext.gameDifficulty.numberOfPairs) {
@@ -16,6 +24,10 @@ export function useStateManager(cardChoices: CardChoice): void {
 
   function gameOver(): void {
     console.log('Game over!')
+    setGameContext({
+      ...gameContext,
+      gameState: 'GAME_OVER',
+    })
   }
 
   useEffect(() => {

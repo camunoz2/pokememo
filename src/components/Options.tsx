@@ -17,7 +17,7 @@ export const Options = ({ fetchPokemons }: Props): JSX.Element => {
     setGameContext({
       gameDifficulty,
       numberOfPlayers,
-      isGameStarted: true,
+      gameState: 'IN_GAME',
     })
     fetchPokemons()
   }

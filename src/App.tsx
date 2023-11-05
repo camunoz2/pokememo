@@ -8,6 +8,7 @@ import { useGetPokemon } from './hooks/useGetPokemons'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { PokemonCard } from './components/PokemonCard'
 import { useStateManager } from './hooks/useStateManager'
+import { GameOver } from './components/GameOver'
 
 function App(): JSX.Element {
   const { gameContext, cardChoices, allMatchedCards } = useGameContext()
@@ -25,22 +26,25 @@ function App(): JSX.Element {
     <div className="overflow-hidden w-full h-full">
       <Header />
       <Background />
-      {!gameContext.isGameStarted && (
+      {gameContext.gameState === 'GAME_OVER' && <GameOver />}
+      {gameContext.gameState === 'SETUP' && (
         <Options
           fetchPokemons={() => {
             void fetchPokemons(gameContext.gameDifficulty.numberOfPairs)
           }}
         />
       )}
-      <div className="container mx-auto">
-        <GameBoard>
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
-          )}
-        </GameBoard>
-      </div>
+      {gameContext.gameState === 'IN_GAME' && (
+        <div className="container mx-auto">
+          <GameBoard>
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
+            )}
+          </GameBoard>
+        </div>
+      )}
     </div>
   )
 }
