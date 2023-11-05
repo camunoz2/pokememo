@@ -1,4 +1,4 @@
-import { type PokemonExtractedData, type Player } from '../customTypes'
+import { type PokemonExtractedData, type CardChoice } from '../customTypes'
 import { PokemonCardBack } from './PokemonCardBack'
 import { PokemonCardFront } from './PokemonCardFront'
 import styles from '../assets/animations.module.css'
@@ -9,34 +9,17 @@ interface Props {
   isFlipped: boolean
 }
 
-export default function PokemonCard({ pokemon, isFlipped }: Props): JSX.Element {
-  const { gameState, setGameState } = useGameContext()
+export function PokemonCard({ pokemon, isFlipped }: Props): JSX.Element {
+  const { cardChoices, setCardChoices, gameState } = useGameContext()
 
   function selectCard(): void {
     if (!gameState.isUIInteractable) return
-
-    let newPlayerState: Player
-
-    // create a newPlayer state with the newcard added to selectedCards
-    if (gameState.currentPlayer.selectedCards.choiceOne === null) {
-      newPlayerState = {
-        ...gameState.currentPlayer,
-        selectedCards: {
-          choiceOne: pokemon,
-          choiceTwo: null,
-        },
-      }
-    } else {
-      newPlayerState = {
-        ...gameState.currentPlayer,
-        selectedCards: {
-          ...gameState.currentPlayer.selectedCards,
-          choiceTwo: pokemon,
-        },
-      }
+    if (pokemon.UUID === cardChoices.choiceOne?.UUID || pokemon.UUID === cardChoices.choiceTwo?.UUID) return // cant select the same card
+    const cards: CardChoice = {
+      choiceOne: cardChoices.choiceOne ?? pokemon,
+      choiceTwo: cardChoices.choiceOne !== null ? pokemon : null,
     }
-
-    setGameState({ ...gameState, currentPlayer: newPlayerState })
+    setCardChoices(cards)
   }
 
   return (

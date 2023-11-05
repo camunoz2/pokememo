@@ -2,6 +2,8 @@ import { type GameOptions, type Difficulty, type Player, type GameState } from '
 
 export const MAX_POKEMON_ID = 1000
 
+export const delay = 1000
+
 export const difficultyOptions: Difficulty[] = [
   {
     label: 'Fácil',
@@ -28,41 +30,25 @@ export const defaultPlayersArray: Player[] = [
     label: 1,
     score: 0,
     name: 'Jugador 1',
-    matchedCards: [],
-    selectedCards: {
-      choiceOne: null,
-      choiceTwo: null,
-    },
+    matchedCardsID: [],
   },
   {
     label: 2,
     score: 0,
     name: 'Jugador 2',
-    matchedCards: [],
-    selectedCards: {
-      choiceOne: null,
-      choiceTwo: null,
-    },
+    matchedCardsID: [],
   },
   {
     label: 3,
     score: 0,
     name: 'Jugador 3',
-    matchedCards: [],
-    selectedCards: {
-      choiceOne: null,
-      choiceTwo: null,
-    },
+    matchedCardsID: [],
   },
   {
     label: 4,
     score: 0,
     name: 'Jugador 4',
-    matchedCards: [],
-    selectedCards: {
-      choiceOne: null,
-      choiceTwo: null,
-    },
+    matchedCardsID: [],
   },
 ]
 
@@ -70,12 +56,9 @@ export const defaultGameOptions: GameOptions = {
   numberOfPlayers: 1,
   gameDifficulty: difficultyOptions[0],
   isGameStarted: false,
-  players: [],
 }
 
 export const initialGameState: GameState = {
-  currentPlayer: defaultPlayersArray[0],
-  allMatchedCards: [],
   isUIInteractable: true,
-  turn: 0,
+  playerTurn: 0,
 }

@@ -1,3 +1,4 @@
+import { type CardChoice, type PokemonExtractedData } from './customTypes'
 import { GameBoard } from './components/GameBoard'
 import { Background } from './components/Background'
 import { Header } from './components/Header'
@@ -5,85 +6,96 @@ import { Options } from './components/Options'
 import { useGameContext } from './context'
 import { useGetPokemon } from './hooks/useGetPokemons'
 import { LoadingSpinner } from './components/LoadingSpinner'
-import PokemonCard from './components/PokemonCard'
+import { PokemonCard } from './components/PokemonCard'
 import { useEffect } from 'react'
-import { type PokemonExtractedData, type GameState, type Player } from './customTypes'
+import { delay } from './defaultSettings'
+import { assertIsDefined } from './services/utils'
 
 function App(): JSX.Element {
-  const { gameContext, gameState, setGameState } = useGameContext()
-  const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
-  const { choiceOne, choiceTwo } = gameState.currentPlayer.selectedCards
+  const {
+    gameContext,
+    gameState,
+    cardChoices,
+    setCardChoices,
+    setGameState,
+    setPlayersState,
+    allMatchedCards,
+    setAllMatchedCards,
+  } = useGameContext()
 
-  function addCardToMatches(card: PokemonExtractedData): void {
-    const newPlayerMatchedCards: Player = {
-      ...gameState.currentPlayer,
-      matchedCards: [...gameState.currentPlayer.matchedCards, card],
+  const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
+
+  useEffect(() => {
+    const areBothCardsSelected = cardChoices.choiceOne !== null && cardChoices.choiceTwo !== null
+    if (areBothCardsSelected) {
+      changeUIInteractivity(false)
+      evaluateCardsSelected(cardChoices)
+      setTimeout(() => {
+        changePlayerTurn()
+        changeUIInteractivity(true)
+        resetCardChoices()
+      }, delay)
     }
-    const newGameState: GameState = {
+  }, [cardChoices.choiceOne, cardChoices.choiceTwo])
+
+  function changeUIInteractivity(isActive: boolean): void {
+    setGameState((prevState) => ({
+      ...prevState,
+      isUIInteractable: isActive,
+    }))
+  }
+
+  function resetCardChoices(): void {
+    setCardChoices({
+      choiceOne: null,
+      choiceTwo: null,
+    })
+  }
+
+  function changePlayerTurn(): void {
+    setGameState((prevState) => ({
       ...gameState,
-      allMatchedCards: [...gameState.allMatchedCards, card],
-      currentPlayer: newPlayerMatchedCards,
+      playerTurn: (prevState.playerTurn + 1) % gameContext.numberOfPlayers, // rotates between 0 - numOfplayers
+    }))
+  }
+
+  function addToPlayerMatches(cardChoices: CardChoice): void {
+    setPlayersState((prevState) => {
+      const currentPlayer = prevState[gameState.playerTurn]
+      const updatedPlayer = {
+        ...currentPlayer,
+        matchedCards: [...currentPlayer.matchedCardsID, cardChoices.choiceOne],
+      }
+      prevState[gameState.playerTurn] = updatedPlayer
+      return [...prevState]
+    })
+  }
+
+  function addToGlobalMatches(cardChoices: CardChoice): void {
+    assertIsDefined(cardChoices.choiceOne)
+    setAllMatchedCards([...allMatchedCards, cardChoices.choiceOne.name])
+  }
+
+  function evaluateCardsSelected(cardChoices: CardChoice): void {
+    if (cardChoices.choiceOne === null || cardChoices.choiceTwo === null) {
+      throw new Error('No hay cartas para comparar')
+    }
+    if (cardChoices.choiceOne.name === cardChoices.choiceTwo.name) {
+      addToPlayerMatches(cardChoices)
+      addToGlobalMatches(cardChoices)
     }
   }
 
   function isCardFlipped(pokemon: PokemonExtractedData): boolean {
-    const isChoiceOne = choiceOne?.UUID === pokemon.UUID
-    const isChoiceTwo = choiceTwo?.UUID === pokemon.UUID
-    return isChoiceOne || isChoiceTwo
+    const isChoiceOne = cardChoices.choiceOne?.UUID === pokemon.UUID
+    const isChoiceTwo = cardChoices.choiceTwo?.UUID === pokemon.UUID
+    const isCardOnMatchesID = allMatchedCards.includes(pokemon.name)
+    return isChoiceOne || isChoiceTwo || isCardOnMatchesID
   }
-
-  useEffect(() => {
-    if (choiceOne !== null && choiceTwo !== null) {
-      // Remove cards, change turn, change currPlayer
-      const playerIndex = gameState.turn % gameContext.numberOfPlayers
-      const nextPlayerInArray = gameContext.players[playerIndex]
-      console.log(nextPlayerInArray)
-      const emptyCurrentPlayerCards: Player = {
-        ...gameState.currentPlayer,
-        selectedCards: {
-          choiceOne: null,
-          choiceTwo: null,
-        },
-      }
-      const newGameState: GameState = {
-        ...gameState,
-        turn: gameState.turn + 1,
-        currentPlayer: emptyCurrentPlayerCards,
-      }
-      setGameState(newGameState)
-    }
-  }, [choiceOne, choiceTwo])
 
   return (
     <div className="overflow-hidden w-full h-full">
       <Header />
-      <div className="grid grid-cols-2 border border-red-100">
-        <div>
-          <h1 className="underline text-lg font-bold">Game Context</h1>
-          <p>Game difficulty: {gameContext.gameDifficulty.label}</p>
-          <p>Game started?: {gameContext.isGameStarted.toString()}</p>
-          <p>PlayersNumber?: {gameContext.numberOfPlayers}</p>
-          <ul className="flex gap-2">
-            Players?:{' '}
-            {gameContext.players.map((p, index) => (
-              <li key={index}>{p.name}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h1 className="underline text-lg font-bold">Game State</h1>
-          <ul>gameState.currentPlayer.selectedCards: {JSON.stringify(gameState.currentPlayer.selectedCards)}</ul>
-          <p>turn: {gameState.turn}</p>
-          <p>gameState.currentPlayer: {gameState.currentPlayer.name}</p>
-          <p>isUIInteractable: {gameState.isUIInteractable.toString()}</p>
-          <h2>Matched cards!</h2>
-          <ul>
-            {Array.from(gameState.allMatchedCards).map((match, index) => (
-              <li key={index}>Matched cards: {match.name}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
       <Background />
       {!gameContext.isGameStarted && (
         <Options

@@ -2,11 +2,12 @@ export interface Player {
   label: number
   name: string
   score: number
-  selectedCards: {
-    choiceOne: PokemonExtractedData | null
-    choiceTwo: PokemonExtractedData | null
-  }
-  matchedCards: PokemonExtractedData[]
+  matchedCardsID: number[]
+}
+
+export interface CardChoice {
+  choiceOne: PokemonExtractedData | null
+  choiceTwo: PokemonExtractedData | null
 }
 
 export interface Pokemon {
@@ -40,19 +41,9 @@ export interface GameOptions {
   numberOfPlayers: number
   gameDifficulty: Difficulty
   isGameStarted: boolean
-  players: Player[]
 }
 
 export interface GameState {
-  turn: number
-  currentPlayer: Player
-  allMatchedCards: PokemonExtractedData[]
+  playerTurn: number
   isUIInteractable: boolean
-}
-
-export interface GameContextOptions {
-  gameContext: GameOptions
-  setGameContext: React.Dispatch<React.SetStateAction<GameOptions>>
-  gameState: GameState
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
 }

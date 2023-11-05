@@ -1,32 +1,24 @@
-import type { Difficulty } from '../customTypes'
-import { DiffilcultyPicker } from './DifficultyPicker'
+import { DifficultySelector } from './DifficultySelector'
 import { defaultGameOptions, difficultyOptions, defaultPlayersArray } from '../defaultSettings'
 import { PlayerPicker } from './PlayerPicker'
 import { useGameContext } from '../context'
+import { useState } from 'react'
 
 interface Props {
   fetchPokemons: () => void
 }
 
 export const Options = ({ fetchPokemons }: Props): JSX.Element => {
-  const { gameContext, setGameContext } = useGameContext()
-
-  function setPlayers(qty: number): void {
-    setGameContext({ ...gameContext, numberOfPlayers: qty, players: defaultPlayersArray.slice(0, qty) })
-  }
-
-  function setDifficulty(difficulty: Difficulty): void {
-    setGameContext({ ...gameContext, gameDifficulty: difficulty })
-  }
+  const { setGameContext } = useGameContext()
+  const [numberOfPlayers, setNumberOfPlayers] = useState(defaultGameOptions.numberOfPlayers)
+  const [gameDifficulty, setGameDifficulty] = useState(defaultGameOptions.gameDifficulty)
 
   function startGame(): void {
-    let numbOfPlayers = 0
-    if (gameContext.players.length < 1) {
-      numbOfPlayers = defaultGameOptions.numberOfPlayers
-    } else {
-      numbOfPlayers = gameContext.numberOfPlayers
-    }
-    setGameContext({ ...gameContext, isGameStarted: true, players: defaultPlayersArray.slice(0, numbOfPlayers) })
+    setGameContext({
+      gameDifficulty,
+      numberOfPlayers,
+      isGameStarted: true,
+    })
     fetchPokemons()
   }
 
@@ -38,7 +30,14 @@ export const Options = ({ fetchPokemons }: Props): JSX.Element => {
           <p className="text-white text-center">Cantidad de jugadores</p>
           <div className="grid grid-cols-4 flex-wrap gap-2">
             {defaultPlayersArray.map((player) => (
-              <PlayerPicker key={player.label} player={player} selectNumberOfPlayers={setPlayers} />
+              <PlayerPicker
+                key={player.label}
+                player={player}
+                selectNumberOfPlayers={() => {
+                  setNumberOfPlayers(player.label)
+                }}
+                numberOfPlayers={numberOfPlayers}
+              />
             ))}
           </div>
         </div>
@@ -46,8 +45,15 @@ export const Options = ({ fetchPokemons }: Props): JSX.Element => {
           <p className="text-white text-center">Dificultad</p>
 
           <div className="grid grid-cols-3 gap-2">
-            {difficultyOptions.map((difficulty) => (
-              <DiffilcultyPicker key={difficulty.value} difficulty={difficulty} selectDifficulty={setDifficulty} />
+            {difficultyOptions.map((difficultyOption) => (
+              <DifficultySelector
+                key={difficultyOption.value}
+                difficultyOption={difficultyOption}
+                selectDifficulty={() => {
+                  setGameDifficulty(difficultyOption)
+                }}
+                gameDifficulty={gameDifficulty}
+              />
             ))}
           </div>
         </div>
