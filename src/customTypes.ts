@@ -2,7 +2,7 @@ export interface Player {
   label: number
   name: string
   score: number
-  matchedCardsID: number[]
+  matchedCards: PokemonExtractedData[]
 }
 
 export interface CardChoice {

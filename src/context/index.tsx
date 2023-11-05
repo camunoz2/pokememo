@@ -26,7 +26,7 @@ function GameContextProvider({ children }: { children: React.ReactNode }): JSX.E
     choiceTwo: null,
   })
   const [gameState, setGameState] = useState(initialGameState)
-  const [playerState, setPlayerState] = useState<Player[]>(defaultPlayersArray)
+  const [playersState, setPlayersState] = useState<Player[]>(defaultPlayersArray)
   const [allMatchedCards, setAllMatchedCards] = useState<string[]>([])
 
   return (
@@ -38,8 +38,8 @@ function GameContextProvider({ children }: { children: React.ReactNode }): JSX.E
         setGameState,
         cardChoices,
         setCardChoices,
-        playersState: playerState,
-        setPlayersState: setPlayerState,
+        playersState,
+        setPlayersState,
         allMatchedCards,
         setAllMatchedCards,
       }}

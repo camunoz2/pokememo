@@ -26,6 +26,7 @@ function App(): JSX.Element {
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
 
   useEffect(() => {
+    if (cardChoices.choiceOne === null && cardChoices.choiceTwo === null) return
     const areBothCardsSelected = cardChoices.choiceOne !== null && cardChoices.choiceTwo !== null
     if (areBothCardsSelected) {
       changeUIInteractivity(false)
@@ -59,15 +60,21 @@ function App(): JSX.Element {
     }))
   }
 
-  function addToPlayerMatches(cardChoices: CardChoice): void {
+  function playerScore(cardChoices: CardChoice): void {
+    assertIsDefined(cardChoices.choiceOne)
     setPlayersState((prevState) => {
-      const currentPlayer = prevState[gameState.playerTurn]
-      const updatedPlayer = {
-        ...currentPlayer,
-        matchedCards: [...currentPlayer.matchedCardsID, cardChoices.choiceOne],
-      }
-      prevState[gameState.playerTurn] = updatedPlayer
-      return [...prevState]
+      return prevState.map((player, idx) => {
+        if (idx === gameState.playerTurn) {
+          return {
+            ...player,
+            matchedCards:
+              cardChoices.choiceOne !== null
+                ? [...player.matchedCards, cardChoices.choiceOne]
+                : [...player.matchedCards],
+          }
+        }
+        return player
+      })
     })
   }
 
@@ -81,7 +88,7 @@ function App(): JSX.Element {
       throw new Error('No hay cartas para comparar')
     }
     if (cardChoices.choiceOne.name === cardChoices.choiceTwo.name) {
-      addToPlayerMatches(cardChoices)
+      playerScore(cardChoices)
       addToGlobalMatches(cardChoices)
     }
   }
@@ -112,6 +119,11 @@ function App(): JSX.Element {
             pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
           )}
         </GameBoard>
+        {/* <ul>
+          {playersState.map((p, i) => (
+            <li key={i}>{p.score.toString()}</li>
+          ))}
+        </ul> */}
       </div>
     </div>
   )
