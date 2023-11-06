@@ -85,6 +85,7 @@ export function useStateManager(cardChoices: CardChoice): void {
               cardChoices.choiceOne !== null
                 ? [...player.matchedCards, cardChoices.choiceOne]
                 : [...player.matchedCards],
+            score: player.score + 1,
           }
         }
         return player
