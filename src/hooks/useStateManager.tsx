@@ -16,18 +16,16 @@ export function useStateManager(cardChoices: CardChoice): void {
     allMatchedCards,
   } = useGameContext()
 
-  useEffect(() => {
-    if (allMatchedCards.length >= gameContext.gameDifficulty.numberOfPairs) {
-      gameOver()
-    }
-  }, [allMatchedCards])
+  const isGameOver = allMatchedCards.length >= gameContext.gameDifficulty.numberOfPairs
+  if (isGameOver) gameOver()
 
-  function gameOver(): void {
+  function gameOver() {
     console.log('Game over!')
     setGameContext({
       ...gameContext,
       gameState: 'GAME_OVER',
     })
+    setAllMatchedCards([])
   }
 
   useEffect(() => {

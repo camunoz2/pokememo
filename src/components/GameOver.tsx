@@ -23,7 +23,7 @@ export function GameOver(): JSX.Element {
           <button
             className="px-6 py-2 rounded shadow text-green-900 text-center bg-green-400"
             onClick={() => {
-              setGameContext({ ...gameContext, gameState: 'SETUP' })
+              setGameContext({ ...gameContext, gameState: "SETUP" })
             }}
           >
             Jugar de nuevo
