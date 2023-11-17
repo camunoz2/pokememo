@@ -7,7 +7,7 @@ export function GameOver(): JSX.Element {
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
       <div className="bg-color-darkblue rounded-md p-12 flex flex-col gap-4">
         <h2 className="text-center text-3xl font-bold text-white">Partida finalizada!</h2>
-        <ul className="flex gap-2">
+        <ul className="flex items-center justify-center gap-2">
           {playersState.map((player) => {
             return (
               <li className="flex flex-col gap-2" key={player.label}>
@@ -17,13 +17,13 @@ export function GameOver(): JSX.Element {
                 </p>
               </li>
             )
-          })}
+          }).slice(0, gameContext.numberOfPlayers)}
         </ul>
         <div className="flex gap-2 items-center justify-center">
           <button
             className="px-6 py-2 rounded shadow text-green-900 text-center bg-green-400"
             onClick={() => {
-              setGameContext({ ...gameContext, gameState: "SETUP" })
+              setGameContext({ ...gameContext, gameState: 'SETUP' })
             }}
           >
             Jugar de nuevo
