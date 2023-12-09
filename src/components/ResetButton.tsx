@@ -1,8 +1,22 @@
-export const ResetButton = () => {
-  // TODO: Make this button reset the game
+import { useGameContext } from "../context"
+
+interface Props {
+  text: string
+}
+
+export const ResetButton = ({ text }: Props) => {
+
+  const { gameContext, setGameContext } = useGameContext()
+
   return (
-    <div className="mx-4 py-2 bg-teal-900 text-2xl rounded shadow text-center flex-1 text-teal-100">
-      Reset
-    </div>
+
+    <button
+      className="px-6 py-2 rounded shadow text-green-900 text-center bg-green-400"
+      onClick={() => {
+        setGameContext({ ...gameContext, gameState: 'SETUP' })
+      }}
+    >
+      {text}
+    </button>
   )
 }

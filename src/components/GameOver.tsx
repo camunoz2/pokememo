@@ -1,7 +1,8 @@
 import { useGameContext } from '../context'
+import { ResetButton } from './ResetButton'
 
 export function GameOver(): JSX.Element {
-  const { setGameContext, gameContext, playersState } = useGameContext()
+  const { gameContext, playersState } = useGameContext()
 
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
@@ -20,14 +21,7 @@ export function GameOver(): JSX.Element {
           }).slice(0, gameContext.numberOfPlayers)}
         </ul>
         <div className="flex gap-2 items-center justify-center">
-          <button
-            className="px-6 py-2 rounded shadow text-green-900 text-center bg-green-400"
-            onClick={() => {
-              setGameContext({ ...gameContext, gameState: 'SETUP' })
-            }}
-          >
-            Jugar de nuevo
-          </button>
+          <ResetButton text='Jugar de Nuevo' />
         </div>
       </div>
     </div>

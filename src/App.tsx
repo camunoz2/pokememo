@@ -9,7 +9,7 @@ import { LoadingSpinner } from './components/LoadingSpinner'
 import { PokemonCard } from './components/PokemonCard'
 import { useStateManager } from './hooks/useStateManager'
 import { GameOver } from './components/GameOver'
-import {ResetButton} from "./components/ResetButton.tsx"
+import { ResetButton } from "./components/ResetButton"
 
 function App(): JSX.Element {
   const { gameContext, cardChoices, allMatchedCards } = useGameContext()
@@ -44,7 +44,7 @@ function App(): JSX.Element {
               pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
             )}
           </GameBoard>
-          <ResetButton/>
+          {!isLoading && <ResetButton text='Reiniciar' />}
         </div>
       )}
     </div>
