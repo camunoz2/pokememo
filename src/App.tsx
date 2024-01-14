@@ -1,7 +1,6 @@
+import  styles from "/.App.module.css"
 import { type PokemonExtractedData } from './customTypes'
 import { GameBoard } from './components/GameBoard'
-import { Background } from './components/Background'
-import { Header } from './components/Header'
 import { Options } from './components/Options'
 import { useGameContext } from './context'
 import { useGetPokemon } from './hooks/useGetPokemons'
@@ -10,6 +9,8 @@ import { PokemonCard } from './components/PokemonCard'
 import { useStateManager } from './hooks/useStateManager'
 import { GameOver } from './components/GameOver'
 import { ResetButton } from "./components/ResetButton"
+import { PlayersScreen } from "./components/screens/PlayersScreen"
+import { MainScreen } from "./components/screens/MainScreen"
 
 function App(): JSX.Element {
   const { gameContext, cardChoices, allMatchedCards } = useGameContext()
@@ -25,8 +26,12 @@ function App(): JSX.Element {
 
   return (
     <div className="overflow-hidden w-full h-full">
-      <Header />
-      <Background />
+          <div className={styles.background}>
+      <div className={styles.container}>
+        <MainScreen />
+        {/* <PlayersScreen /> */}
+      </div>
+    </div>
       {gameContext.gameState === 'GAME_OVER' && <GameOver />}
       {gameContext.gameState === 'SETUP' && (
         <Options

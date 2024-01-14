@@ -1,0 +1,8 @@
+.char {
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  fill: var(--bg-color-yellow);
+  stroke-width: 15px;
+  stroke: var(--bg-color-blue);
+  paint-order: stroke;
+}

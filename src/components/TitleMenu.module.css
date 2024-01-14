@@ -1,0 +1,29 @@
+.enter {
+  margin-top: 1rem;
+  width: 600px;
+  height: 80px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+}
+
+.enter p {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+}
+
+.enter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    270deg,
+    rgba(30, 30, 30, 0) 0%,
+    rgba(30, 30, 30, 0.6) 48.98%,
+    rgba(30, 30, 30, 0) 100%
+  );
+  z-index: -1;
+}

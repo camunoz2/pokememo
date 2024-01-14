@@ -1,0 +1,54 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-width);
+  height: var(--btn-height);
+  user-select: none;
+}
+
+.front-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--btn-width);
+  height: var(--btn-height);
+  clip-path: polygon(
+    var(--btn-offset) 0px,
+    var(--btn-width) 0px,
+    var(--btn-width) calc(var(--btn-height) - var(--btn-offset)),
+    calc(var(--btn-width) - var(--btn-offset)) var(--btn-height),
+    0px var(--btn-width),
+    0px var(--btn-offset)
+  );
+  background-color: var(--bg-color-yellow);
+}
+
+.shine {
+  width: 70px;
+  background-color: rgba(255, 255, 255, 0.7);
+  height: var(--btn-height);
+}
+.back-card {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: var(--btn-width);
+  height: var(--btn-height);
+  clip-path: polygon(
+    var(--btn-offset) 0px,
+    var(--btn-width) 0px,
+    var(--btn-width) calc(var(--btn-height) - var(--btn-offset)),
+    calc(var(--btn-width) - var(--btn-offset)) var(--btn-height),
+    0px var(--btn-width),
+    0px var(--btn-offset)
+  );
+  background-color: black;
+  z-index: -1;
+}
+
+.content {
+  text-align: center;
+  z-index: 5;
+}
