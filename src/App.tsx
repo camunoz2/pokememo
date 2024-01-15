@@ -1,19 +1,22 @@
-import  styles from "/.App.module.css"
+import styles from './App.module.css'
 import { type PokemonExtractedData } from './customTypes'
-import { GameBoard } from './components/GameBoard'
-import { Options } from './components/Options'
 import { useGameContext } from './context'
 import { useGetPokemon } from './hooks/useGetPokemons'
-import { LoadingSpinner } from './components/LoadingSpinner'
-import { PokemonCard } from './components/PokemonCard'
 import { useStateManager } from './hooks/useStateManager'
-import { GameOver } from './components/GameOver'
-import { ResetButton } from "./components/ResetButton"
-import { PlayersScreen } from "./components/screens/PlayersScreen"
-import { MainScreen } from "./components/screens/MainScreen"
+import { PlayersScreen } from './components/screens/PlayersScreen'
+import { MainScreen } from './components/screens/MainScreen'
+import { Options } from './components/Options'
+import { DifficultySelectorScreen } from './components/screens/DifficultySelectorScreen'
+
+export interface CustomChar {
+  zIndex: number
+  xPos: number
+  yPos: number
+  char: string
+}
 
 function App(): JSX.Element {
-  const { gameContext, cardChoices, allMatchedCards } = useGameContext()
+  const { gameOptions, cardChoices, allMatchedCards } = useGameContext()
   const { fetchPokemons, pokemons, isLoading } = useGetPokemon()
   useStateManager(cardChoices)
 
@@ -25,14 +28,13 @@ function App(): JSX.Element {
   }
 
   return (
-    <div className="overflow-hidden w-full h-full">
-          <div className={styles.background}>
+    <div className={styles.background}>
       <div className={styles.container}>
-        <MainScreen />
-        {/* <PlayersScreen /> */}
+        {gameOptions.gameState === 'START_SCREEN' && <MainScreen />}
+        {gameOptions.gameState === 'IN_GAME' && <PlayersScreen />}
+        {gameOptions.gameState === 'DIFFICULTY_SELECTOR' && <DifficultySelectorScreen />}
       </div>
-    </div>
-      {gameContext.gameState === 'GAME_OVER' && <GameOver />}
+      {/* {gameContext.gameState === 'GAME_OVER' && <GameOver />}
       {gameContext.gameState === 'SETUP' && (
         <Options
           fetchPokemons={() => {
@@ -49,9 +51,9 @@ function App(): JSX.Element {
               pokemons?.map((poke, index) => <PokemonCard key={index} pokemon={poke} isFlipped={isCardFlipped(poke)} />)
             )}
           </GameBoard>
-          {!isLoading && <ResetButton text='Reiniciar' />}
+          {!isLoading && <ResetButton text="Reiniciar" />}
         </div>
-      )}
+      )} */}
     </div>
   )
 }

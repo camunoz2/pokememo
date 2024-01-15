@@ -4,8 +4,8 @@ import { defaultGameOptions, defaultPlayersArray, initialGameState } from '../de
 import { type GameOptions, type CardChoice, type GameState, type Player } from '../customTypes'
 
 export interface GameContextOptions {
-  gameContext: GameOptions
-  setGameContext: React.Dispatch<React.SetStateAction<GameOptions>>
+  gameOptions: GameOptions
+  setGameOptions: React.Dispatch<React.SetStateAction<GameOptions>>
   gameState: GameState
   setGameState: React.Dispatch<React.SetStateAction<GameState>>
   cardChoices: CardChoice
@@ -19,7 +19,7 @@ export interface GameContextOptions {
 const GameContext = createContext<GameContextOptions | null>(null)
 
 function GameContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [gameContext, setGameContext] = useState(defaultGameOptions)
+  const [gameOptions, setGameOptions] = useState(defaultGameOptions)
 
   const [cardChoices, setCardChoices] = useState<CardChoice>({
     choiceOne: null,
@@ -32,8 +32,8 @@ function GameContextProvider({ children }: { children: React.ReactNode }): JSX.E
   return (
     <GameContext.Provider
       value={{
-        gameContext,
-        setGameContext,
+        gameOptions,
+        setGameOptions,
         gameState,
         setGameState,
         cardChoices,

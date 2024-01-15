@@ -1,9 +1,13 @@
-import styles from "./TitleMenu.module.css";
+import styles from './TitleMenu.module.css'
 
-export function TitleMenu() {
+interface Props {
+  text: string
+}
+
+export function TitleMenu({ text }: Props) {
   return (
     <div className={styles.enter}>
-      <p>Cuantos jugadores?</p>
+      <p>{text}</p>
     </div>
-  );
+  )
 }

@@ -5,8 +5,10 @@ import { TopBar } from '../TopBar'
 import styles from './PlayersScreen.module.css'
 import { Variants, motion } from 'framer-motion'
 import { useGameContext } from '../../context'
+import { Difficulty } from '../../customTypes'
+import { difficultyOptions } from '../../defaultSettings'
 
-export function PlayersScreen() {
+export function DifficultySelectorScreen() {
   const { setGameOptions, gameOptions } = useGameContext()
 
   function goBack(keyPressed: KeyboardEvent) {
@@ -35,18 +37,18 @@ export function PlayersScreen() {
     },
   }
 
-  function setPlayerNumber(nOfPlayers: number) {
+  function setDifficulty(difficulty: Difficulty) {
     setGameOptions({
       ...gameOptions,
-      gameState: 'DIFFICULTY_SELECTOR',
-      numberOfPlayers: nOfPlayers,
+      gameState: 'IN_GAME',
+      gameDifficulty: difficulty,
     })
   }
 
   return (
     <div className={styles.container}>
       <TopBar />
-      <TitleMenu text="Cuantos jugadores?" />
+      <TitleMenu text="Elige una dificultad" />
       <motion.div
         initial="hidden"
         animate="visible"
@@ -56,19 +58,13 @@ export function PlayersScreen() {
         }}
         className={styles['card-container']}
       >
-        <Card clickHandler={() => setPlayerNumber(1)} variant={variant}>
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-        </Card>
-        <Card clickHandler={() => setPlayerNumber(2)} variant={variant}>
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-        </Card>
-
-        <Card clickHandler={() => setPlayerNumber(3)} variant={variant}>
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-          <img src="/pokeball.svg" alt="" className={styles['card-content']} />
-        </Card>
+        {difficultyOptions.map((difficulty) => {
+          return (
+            <Card clickHandler={() => setDifficulty(difficulty)} variant={variant}>
+              <img src={difficulty.icon} alt="" className={styles['card-images']} />
+            </Card>
+          )
+        })}
       </motion.div>
     </div>
   )

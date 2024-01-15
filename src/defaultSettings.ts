@@ -55,7 +55,7 @@ export const defaultPlayersArray: Player[] = [
 export const defaultGameOptions: GameOptions = {
   numberOfPlayers: 1,
   gameDifficulty: difficultyOptions[0],
-  gameState: 'SETUP',
+  gameState: 'START_SCREEN',
 }
 
 export const initialGameState: GameState = {

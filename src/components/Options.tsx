@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Options = ({ fetchPokemons }: Props): JSX.Element => {
-  const { setGameContext } = useGameContext()
+  const { setGameOptions: setGameContext } = useGameContext()
   const [numberOfPlayers, setNumberOfPlayers] = useState(defaultGameOptions.numberOfPlayers)
   const [gameDifficulty, setGameDifficulty] = useState(defaultGameOptions.gameDifficulty)
 
@@ -43,7 +43,6 @@ export const Options = ({ fetchPokemons }: Props): JSX.Element => {
         </div>
         <div className="flex flex-col gap-6">
           <p className="text-white text-center">Dificultad</p>
-
           <div className="grid grid-cols-3 gap-2">
             {difficultyOptions.map((difficultyOption) => (
               <DifficultySelector

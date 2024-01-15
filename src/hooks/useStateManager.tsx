@@ -9,20 +9,20 @@ export function useStateManager(cardChoices: CardChoice): void {
     setGameState,
     setCardChoices,
     gameState,
-    gameContext,
-    setGameContext,
+    gameOptions,
+    setGameOptions,
     setPlayersState,
     setAllMatchedCards,
     allMatchedCards,
   } = useGameContext()
 
-  const isGameOver = allMatchedCards.length >= gameContext.gameDifficulty.numberOfPairs
+  const isGameOver = allMatchedCards.length >= gameOptions.gameDifficulty.numberOfPairs
   if (isGameOver) gameOver()
 
   function gameOver() {
     console.log('Game over!')
-    setGameContext({
-      ...gameContext,
+    setGameOptions({
+      ...gameOptions,
       gameState: 'GAME_OVER',
     })
     setAllMatchedCards([])
@@ -59,7 +59,7 @@ export function useStateManager(cardChoices: CardChoice): void {
   function changePlayerTurn(): void {
     setGameState((prevState) => ({
       ...gameState,
-      playerTurn: (prevState.playerTurn + 1) % gameContext.numberOfPlayers, // rotates between 0 - numOfplayers
+      playerTurn: (prevState.playerTurn + 1) % gameOptions.numberOfPlayers, // rotates between 0 - numOfplayers
     }))
   }
 

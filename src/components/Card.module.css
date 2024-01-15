@@ -1,3 +1,9 @@
+:root {
+  --btn-width: 150px;
+  --btn-height: 75px;
+  --btn-offset: 18px;
+}
+
 .container {
   position: relative;
   display: flex;
@@ -6,6 +12,7 @@
   width: var(--btn-width);
   height: var(--btn-height);
   user-select: none;
+  gap: 0.8rem;
 }
 
 .front-card {
@@ -44,11 +51,6 @@
     0px var(--btn-width),
     0px var(--btn-offset)
   );
-  background-color: black;
+  background-color: var(--bg-color-black);
   z-index: -1;
-}
-
-.content {
-  text-align: center;
-  z-index: 5;
 }

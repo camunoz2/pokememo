@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './global.css'
 import App from './App'
+import './index.css'
 import { GameContextProvider } from './context'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -9,5 +9,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <GameContextProvider>
       <App />
     </GameContextProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
