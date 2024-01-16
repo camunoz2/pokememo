@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import { Card } from '../Card'
 import { TitleMenu } from '../TitleMenu'
 import { TopBar } from '../TopBar'
-import styles from './PlayersScreen.module.css'
+import styles from './PlayersSelectionScreen.module.css'
 import { Variants, motion } from 'framer-motion'
 import { useGameContext } from '../../context'
 import { Difficulty } from '../../customTypes'
@@ -10,21 +9,6 @@ import { difficultyOptions } from '../../defaultSettings'
 
 export function DifficultySelectorScreen() {
   const { setGameOptions, gameOptions } = useGameContext()
-
-  function goBack(keyPressed: KeyboardEvent) {
-    console.log(keyPressed)
-    if (keyPressed.key == 'Escape') {
-      console.log('escape')
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keypress', goBack)
-
-    return () => {
-      window.removeEventListener('keypress', goBack)
-    }
-  })
 
   const variant: Variants = {
     hidden: {
@@ -60,7 +44,7 @@ export function DifficultySelectorScreen() {
       >
         {difficultyOptions.map((difficulty) => {
           return (
-            <Card clickHandler={() => setDifficulty(difficulty)} variant={variant}>
+            <Card clickHandler={() => setDifficulty(difficulty)} variant={variant} key={difficulty.value}>
               <img src={difficulty.icon} alt="" className={styles['card-images']} />
             </Card>
           )

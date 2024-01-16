@@ -40,7 +40,7 @@ export interface Difficulty {
 export interface GameOptions {
   numberOfPlayers: number
   gameDifficulty: Difficulty
-  gameState: 'DIFFICULTY_SELECTOR' | 'IN_GAME' | 'GAME_OVER' | 'START_SCREEN'
+  gameState: 'START_SCREEN' | 'PLAYER_SELECTION' | 'DIFFICULTY_SELECTION' | 'IN_GAME' | 'GAME_OVER' | 'LOADING'
 }
 
 export interface GameState {

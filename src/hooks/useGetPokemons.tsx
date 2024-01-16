@@ -4,12 +4,14 @@ import { getRandomPokemons } from '../services/getPokemons'
 
 export function useGetPokemon(): {
   isLoading: boolean
+  isFinished: boolean
   error: string | null
   pokemons: PokemonExtractedData[] | null
   fetchPokemons: (pokemonLimit: number) => Promise<void>
 } {
   const [pokemons, setPokemons] = useState<PokemonExtractedData[] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const fetchPokemons = useCallback(async (pokemonLimit: number): Promise<void> => {
@@ -23,8 +25,9 @@ export function useGetPokemon(): {
       console.error(error)
     } finally {
       setIsLoading(false)
+      setIsFinished(true)
     }
   }, [])
 
-  return { isLoading, error, pokemons, fetchPokemons }
+  return { isLoading, isFinished, error, pokemons, fetchPokemons }
 }

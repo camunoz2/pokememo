@@ -3,10 +3,12 @@ import { type PokemonExtractedData } from './customTypes'
 import { useGameContext } from './context'
 import { useGetPokemon } from './hooks/useGetPokemons'
 import { useStateManager } from './hooks/useStateManager'
-import { PlayersScreen } from './components/screens/PlayersScreen'
+import { PlayersSelectionScreen } from './components/screens/PlayersSelectionScreen'
 import { MainScreen } from './components/screens/MainScreen'
 import { Options } from './components/Options'
 import { DifficultySelectorScreen } from './components/screens/DifficultySelectorScreen'
+import { GameScreen } from './components/screens/GameScreen'
+import { LoadingSpinner } from './components/LoadingSpinner'
 
 export interface CustomChar {
   zIndex: number
@@ -31,8 +33,9 @@ function App(): JSX.Element {
     <div className={styles.background}>
       <div className={styles.container}>
         {gameOptions.gameState === 'START_SCREEN' && <MainScreen />}
-        {gameOptions.gameState === 'IN_GAME' && <PlayersScreen />}
-        {gameOptions.gameState === 'DIFFICULTY_SELECTOR' && <DifficultySelectorScreen />}
+        {gameOptions.gameState === 'PLAYER_SELECTION' && <PlayersSelectionScreen />}
+        {gameOptions.gameState === 'DIFFICULTY_SELECTION' && <DifficultySelectorScreen />}
+        {gameOptions.gameState === 'IN_GAME' && <GameScreen />}
       </div>
       {/* {gameContext.gameState === 'GAME_OVER' && <GameOver />}
       {gameContext.gameState === 'SETUP' && (
