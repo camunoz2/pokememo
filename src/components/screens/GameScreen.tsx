@@ -5,6 +5,7 @@ import { TopBar } from '../TopBar'
 import styles from './PlayersSelectionScreen.module.css'
 import { Variants, motion } from 'framer-motion'
 import { useGameContext } from '../../context'
+import { ResetButton } from '../ResetButton'
 
 export function GameScreen() {
   const { isLoading, pokemons, fetchPokemons } = useGetPokemon()
@@ -45,6 +46,7 @@ export function GameScreen() {
               </Card>
             ))}
       </motion.div>
+      <ResetButton text={'Salir'} />
     </div>
   )
 }

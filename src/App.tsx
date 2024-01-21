@@ -5,10 +5,8 @@ import { useGetPokemon } from './hooks/useGetPokemons'
 import { useStateManager } from './hooks/useStateManager'
 import { PlayersSelectionScreen } from './components/screens/PlayersSelectionScreen'
 import { MainScreen } from './components/screens/MainScreen'
-import { Options } from './components/Options'
 import { DifficultySelectorScreen } from './components/screens/DifficultySelectorScreen'
 import { GameScreen } from './components/screens/GameScreen'
-import { LoadingSpinner } from './components/LoadingSpinner'
 
 export interface CustomChar {
   zIndex: number

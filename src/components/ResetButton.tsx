@@ -1,3 +1,4 @@
+import styles from './ResetButton.module.css'
 import { useGameContext } from '../context'
 
 interface Props {
@@ -5,13 +6,13 @@ interface Props {
 }
 
 export const ResetButton = ({ text }: Props) => {
-  const { gameContext, setGameOptions: setGameContext } = useGameContext()
+  const { setGameOptions, gameOptions } = useGameContext()
 
   return (
     <button
-      className="px-6 py-2 rounded shadow text-green-900 text-center bg-green-400"
+      className={styles.container}
       onClick={() => {
-        setGameContext({ ...gameContext, gameState: 'SETUP' })
+        setGameOptions({ ...gameOptions, gameState: 'START_SCREEN' })
       }}
     >
       {text}

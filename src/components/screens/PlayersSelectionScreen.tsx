@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Card } from '../Card'
 import { TitleMenu } from '../TitleMenu'
 import { TopBar } from '../TopBar'
