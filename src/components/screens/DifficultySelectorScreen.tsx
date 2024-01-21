@@ -31,7 +31,7 @@ export function DifficultySelectorScreen() {
 
   return (
     <div className={styles.container}>
-      <TopBar />
+      <TopBar text="Dificultad" />
       <TitleMenu text="Elige una dificultad" />
       <motion.div
         initial="hidden"

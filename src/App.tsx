@@ -31,7 +31,6 @@ function App(): JSX.Element {
     <div className={styles.background}>
       <div className={styles.container}>
         {gameOptions.gameState === 'START_SCREEN' && <MainScreen />}
-        {gameOptions.gameState === 'PLAYER_SELECTION' && <PlayersSelectionScreen />}
         {gameOptions.gameState === 'DIFFICULTY_SELECTION' && <DifficultySelectorScreen />}
         {gameOptions.gameState === 'IN_GAME' && <GameScreen />}
       </div>

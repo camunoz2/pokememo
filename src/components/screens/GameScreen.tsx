@@ -28,7 +28,7 @@ export function GameScreen() {
 
   return (
     <div className={styles.container}>
-      <TopBar />
+      <TopBar text="A jugar!" />
       <motion.div
         initial="hidden"
         animate="visible"

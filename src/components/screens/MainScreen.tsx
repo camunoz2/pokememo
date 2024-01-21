@@ -17,7 +17,7 @@ export function MainScreen() {
   function startGame(keyPressed: KeyboardEvent) {
     if (keyPressed.key === 'Enter') {
       setGameOptions({
-        gameState: 'PLAYER_SELECTION',
+        gameState: 'DIFFICULTY_SELECTION',
         gameDifficulty: gameOptions.gameDifficulty, // Default settings
         numberOfPlayers: gameOptions.numberOfPlayers,
       })
