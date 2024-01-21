@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useGetPokemon } from '../../hooks/useGetPokemons'
 import { Card } from '../Card'
 import { TopBar } from '../TopBar'
@@ -6,10 +6,11 @@ import styles from './PlayersSelectionScreen.module.css'
 import { Variants, motion } from 'framer-motion'
 import { useGameContext } from '../../context'
 import { ResetButton } from '../ResetButton'
+import { PokemonExtractedData } from '../../customTypes'
 
 export function GameScreen() {
   const { isLoading, pokemons, fetchPokemons } = useGetPokemon()
-  const { gameOptions } = useGameContext()
+  const { gameOptions, cardChoices, allMatchedCards } = useGameContext()
 
   useEffect(() => {
     fetchPokemons(gameOptions.gameDifficulty.numberOfPairs)
@@ -24,6 +25,12 @@ export function GameScreen() {
       x: 0,
       opacity: 1,
     },
+  }
+  function isCardFlipped(pokemon: PokemonExtractedData): boolean {
+    const isChoiceOne = cardChoices.choiceOne?.UUID === pokemon.UUID
+    const isChoiceTwo = cardChoices.choiceTwo?.UUID === pokemon.UUID
+    const isCardOnMatchesID = allMatchedCards.includes(pokemon.name)
+    return isChoiceOne || isChoiceTwo || isCardOnMatchesID
   }
 
   return (

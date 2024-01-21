@@ -29,7 +29,7 @@ export function PlayersSelectionScreen() {
 
   return (
     <div className={styles.container}>
-      <TopBar />
+      <TopBar text="Elige" />
       <TitleMenu text="Cuantos jugadores?" />
       <motion.div
         initial="hidden"
