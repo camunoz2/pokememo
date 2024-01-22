@@ -7,6 +7,7 @@ import { Variants, motion } from 'framer-motion'
 import { useGameContext } from '../../context'
 import { ResetButton } from '../ResetButton'
 import { PokemonExtractedData } from '../../customTypes'
+import { Loading } from '../Loading'
 
 export function GameScreen() {
   const { isLoading, pokemons, fetchPokemons } = useGetPokemon()
@@ -45,13 +46,15 @@ export function GameScreen() {
         }}
         className={styles['card-container-grid']}
       >
-        {isLoading
-          ? 'Loadding'
-          : pokemons?.map((pokemon) => (
-              <Card variant={variant} key={pokemon.UUID}>
-                <img src={pokemon.sprite} alt="" className={styles['card-images']} />
-              </Card>
-            ))}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          pokemons?.map((pokemon) => (
+            <Card variant={variant} key={pokemon.UUID}>
+              <img src={pokemon.sprite} alt="" className={styles['card-images']} />
+            </Card>
+          ))
+        )}
       </motion.div>
       <ResetButton text={'Salir'} />
     </div>
