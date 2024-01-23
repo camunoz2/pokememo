@@ -25,32 +25,21 @@ export function GameScreen() {
     visible: {
       x: 0,
       opacity: 1,
+      transition: {
+        staggerChildren: 0.07,
+      },
     },
-  }
-  function isCardFlipped(pokemon: PokemonExtractedData): boolean {
-    const isChoiceOne = cardChoices.choiceOne?.UUID === pokemon.UUID
-    const isChoiceTwo = cardChoices.choiceTwo?.UUID === pokemon.UUID
-    const isCardOnMatchesID = allMatchedCards.includes(pokemon.name)
-    return isChoiceOne || isChoiceTwo || isCardOnMatchesID
   }
 
   return (
     <div className={styles.container}>
       <TopBar text="A jugar!" />
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={variant}
-        transition={{
-          staggerChildren: 0.1,
-        }}
-        className={styles['card-container-grid']}
-      >
+      <motion.div initial="hidden" animate="visible" variants={variant} className={styles['card-container-grid']}>
         {isLoading ? (
           <Loading />
         ) : (
           pokemons?.map((pokemon) => (
-            <Card variant={variant} key={pokemon.UUID}>
+            <Card key={pokemon.UUID}>
               <img src={pokemon.sprite} alt="" className={styles['card-images']} />
             </Card>
           ))
