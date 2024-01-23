@@ -10,7 +10,7 @@ import { PokemonExtractedData } from '../../customTypes'
 import { Loading } from '../Loading'
 
 export function GameScreen() {
-  const { isLoading, pokemons, fetchPokemons } = useGetPokemon()
+  const { isLoading, pokemons, fetchPokemons, isFinished } = useGetPokemon()
   const { gameOptions, cardChoices, allMatchedCards } = useGameContext()
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function GameScreen() {
           ))
         )}
       </motion.div>
-      <ResetButton text={'Salir'} />
+      {isFinished && <ResetButton text="Salir" />}
     </div>
   )
 }
